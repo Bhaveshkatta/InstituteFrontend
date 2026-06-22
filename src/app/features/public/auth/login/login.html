@@ -1,0 +1,145 @@
+<div class="login-page">
+  <!-- Cybernetic tech background overlays -->
+  <div class="cyber-grid"></div>
+  <div class="ambient-glows">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="glow-3"></div>
+  </div>
+  
+  <div class="left">
+    <!-- Futuristic 3D metallic shield badge -->
+    <div class="badge-stage">
+      <div class="outer-glow-ring"></div>
+      <div class="metallic-ring">
+        <div class="inner-plate">
+          <img src="images/logo.png" class="logo" alt="Khandelwal Computer Logo">
+        </div>
+      </div>
+      <!-- Circuit tracks surrounding the badge -->
+      <svg class="circuit-lines" viewBox="0 0 500 500">
+        <path d="M 50 250 L 150 250 L 200 200 L 250 200" stroke="rgba(0, 150, 255, 0.4)" stroke-width="2" fill="none" />
+        <path d="M 450 250 L 350 250 L 300 300 L 250 300" stroke="rgba(168, 85, 247, 0.4)" stroke-width="2" fill="none" />
+        <circle cx="50" cy="250" r="4" fill="#00e5ff" />
+        <circle cx="450" cy="250" r="4" fill="#a855f7" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="login-card-wrapper">
+      <div class="login-card">
+        <!-- Title section with lock icon -->
+        <div class="card-header">
+          <mat-icon class="lock-header-icon">lock</mat-icon>
+          <h1>LOGIN</h1>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Email Field -->
+          <div class="form-group">
+            <label class="input-label" for="email">Email Address</label>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-icon matPrefix>mail</mat-icon>
+              <input
+                matInput
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="Email Address"
+                autocomplete="email"
+              />
+            </mat-form-field>
+            @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+              <div class="error-msg">
+                @if (loginForm.get('email')?.errors?.['required']) {
+                  Email is required.
+                } @else if (loginForm.get('email')?.errors?.['email']) {
+                  Please enter a valid email.
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label class="input-label" for="password">Password</label>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-icon matPrefix>lock</mat-icon>
+              <input
+                matInput
+                id="password"
+                [type]="hidePassword() ? 'password' : 'text'"
+                formControlName="password"
+                placeholder="Password"
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="togglePassword()"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword()"
+                class="visibility-toggle-btn"
+              >
+                <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+              </button>
+            </mat-form-field>
+            @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+              <div class="error-msg">
+                @if (loginForm.get('password')?.errors?.['required']) {
+                  Password is required.
+                } @else if (loginForm.get('password')?.errors?.['minlength']) {
+                  Password must be at least 6 characters.
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Actions: Remember Me & Forgot Password -->
+          <div class="actions">
+            <!-- <mat-checkbox class="remember-checkbox">
+              <span class="checkbox-label">Remember me</span>
+            </mat-checkbox> -->
+            <a class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            mat-flat-button
+            class="login-btn"
+            type="submit"
+            [disabled]="isLoading()"
+          >
+            @if (isLoading()) {
+              <div class="btn-spinner"></div>
+              <span>Authenticating...</span>
+            } @else {
+              <span>LOGIN</span>
+            }
+          </button>
+        </form>
+
+        <!-- Card Footer -->
+        <div class="card-footer">
+          <span>Don't have an account? </span>
+          <a class="signup-link">Sign Up</a>
+        </div>
+
+        <!-- Success overlay state -->
+        @if (loginSuccess()) {
+          <div class="success-overlay">
+            <div class="success-content">
+              <div class="checkmark-circle">
+                <mat-icon class="check-icon">check</mat-icon>
+              </div>
+              <h3>Welcome Back!</h3>
+              <p>Login successful. Accessing portal...</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
