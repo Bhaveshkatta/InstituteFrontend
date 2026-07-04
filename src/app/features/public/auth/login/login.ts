@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { MATERIAL_IMPORTS } from '../../../../shared/ui/material.imports';
 
 @Component({
   selector: 'app-login',
-  imports: [ ...MATERIAL_IMPORTS ],
+  imports: [ ...MATERIAL_IMPORTS, RouterLink ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

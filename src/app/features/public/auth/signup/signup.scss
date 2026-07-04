@@ -175,14 +175,16 @@
   }
 }
 
-/* RIGHT SIDE - LOGIN CARD */
+/* RIGHT SIDE - SIGNUP CARD */
 .right {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 5;
-  padding: 40px;
+  padding: 20px 40px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .login-card-wrapper {
@@ -194,6 +196,8 @@
     0 25px 50px -12px rgba(0, 0, 0, 0.7),
     0 0 40px rgba(124, 58, 237, 0.15);
   animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-height: 95vh;
+  display: flex;
 }
 
 .login-card {
@@ -201,14 +205,29 @@
   width: 100%;
   max-width: 440px;
   min-width: 380px;
-  padding: 50px 40px;
+  padding: 30px 40px;
   border-radius: 23px;
   background: rgba(5, 7, 16, 0.92);
   backdrop-filter: blur(25px);
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  overflow: hidden;
+  gap: 20px;
+  overflow-y: auto;
+  
+  // Custom scrollbar styling for card internal scroll
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
 
 /* Card Header */
@@ -238,7 +257,7 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 /* Inputs & Form Groups */
@@ -250,13 +269,17 @@
     font-size: 13px;
     font-weight: 500;
     color: #94a3b8;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     letter-spacing: 0.5px;
   }
 
   mat-form-field {
     width: 100%;
   }
+}
+
+.term-group {
+  margin-top: 4px;
 }
 
 .visibility-toggle-btn {
@@ -279,40 +302,18 @@
   color: #ef4444;
   font-size: 12px;
   font-weight: 500;
-  margin-top: 6px;
+  margin-top: 4px;
   padding-left: 4px;
   animation: slideDownError 0.2s ease forwards;
 }
 
-/* Actions Row */
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 4px;
-}
-
-.forgot-link {
-  font-size: 14px;
-  color: #8b5cf6;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
-
-  &:hover {
-    color: #a78bfa;
-    text-shadow: 0 0 8px rgba(167, 139, 250, 0.4);
-  }
-}
-
 /* Submit Button */
 .login-btn {
-  height: 52px;
+  height: 48px;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  border-radius: 26px !important;
+  border-radius: 24px !important;
   color: #ffffff !important;
   background: linear-gradient(90deg, #1d4ed8 0%, #581c87 50%, #7c3aed 100%) !important;
   background-size: 200% auto !important;
@@ -322,6 +323,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  margin-top: 8px;
 
   &:hover:not([disabled]) {
     background-position: right center !important;
@@ -357,7 +359,7 @@
   text-align: center;
   font-size: 14px;
   color: #64748b;
-  margin-top: 10px;
+  margin-top: 4px;
 
   .signup-link {
     color: #38bdf8;
@@ -448,7 +450,7 @@
     border-radius: 12px !important;
     transition: all 0.3s ease !important;
     padding: 0 16px !important;
-    height: 52px !important;
+    height: 48px !important;
     display: flex !important;
     align-items: center !important;
 
@@ -513,8 +515,6 @@
   /* Checkbox styling */
   .remember-checkbox {
     .mdc-checkbox {
-    //   padding: 8px !important;
-    // gap: 4px !important;
       margin-right: 8px !important;
       
       .mdc-checkbox__background {
@@ -550,12 +550,17 @@
   }
 
   .right {
-    padding: 0px;
+    padding: 20px;
+  }
+
+  .login-card-wrapper {
+    max-height: 98vh;
+    width: 100%;
   }
 
   .login-card {
     min-width: 100%;
     max-width: 100%;
-    padding: 40px 30px;
+    padding: 30px 20px;
   }
 }
