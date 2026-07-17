@@ -4,7 +4,8 @@
 
 .login-page {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   background-color: #020308;
@@ -292,9 +293,32 @@
   justify-content: center;
   color: #64748b;
   transition: color 0.2s ease;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 50% !important;
 
   &:hover {
     color: #ffffff;
+  }
+}
+
+/* Mobile branding styling */
+.mobile-branding {
+  display: none;
+  text-align: center;
+  margin-bottom: 20px;
+  
+  .branding-text {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #00e5ff 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
   }
 }
 
@@ -464,6 +488,10 @@
     }
   }
 
+  .mat-mdc-form-field-flex {
+    align-items: center !important;
+  }
+
   .mat-mdc-form-field-infix {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -551,6 +579,12 @@
 
   .right {
     padding: 20px;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  .mobile-branding {
+    display: flex !important;
   }
 
   .login-card-wrapper {
