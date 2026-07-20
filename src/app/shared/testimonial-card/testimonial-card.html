@@ -1,0 +1,20 @@
+<mat-card class="test-card">
+  <mat-card-content class="card-body">
+    <div class="rating-stars">
+      @for (star of getStars(testimonial().rating); track $index) {
+        <mat-icon class="star-icon">star</mat-icon>
+      }
+    </div>
+    
+    <p class="comment-text">"{{ testimonial().comment }}"</p>
+    
+    <div class="user-profile">
+      <img [src]="testimonial().avatar" [alt]="testimonial().name" class="avatar-image" loading="lazy" />
+      <div class="profile-meta">
+        <h4 class="profile-name">{{ testimonial().name }}</h4>
+        <p class="profile-role">{{ testimonial().role }}</p>
+      </div>
+      <mat-icon class="quote-icon">format_quote</mat-icon>
+    </div>
+  </mat-card-content>
+</mat-card>

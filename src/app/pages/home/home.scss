@@ -1,0 +1,343 @@
+.sidenav-container {
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  background-color: #ffffff;
+}
+
+.mobile-sidenav {
+  width: 280px;
+  background-color: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+
+  .sidenav-header {
+    height: 80px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    .sidenav-logo {
+      height: 38px;
+      width: auto;
+    }
+
+    .sidenav-brand {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--mat-sys-primary, #1976d2);
+      margin-left: 8px;
+      flex-grow: 1;
+    }
+    
+    .close-btn {
+      color: #64748b;
+    }
+  }
+
+  .sidenav-list {
+    padding-top: 16px;
+
+    a {
+      height: 48px;
+      margin: 4px 8px;
+      border-radius: 8px;
+      color: #334155;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: rgba(25, 118, 210, 0.04);
+        color: var(--mat-sys-primary, #1976d2);
+        
+        mat-icon {
+          color: var(--mat-sys-primary, #1976d2);
+        }
+      }
+
+      mat-icon {
+        color: #64748b;
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+// Global container class for max content widths
+.container-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+// Section styling
+section {
+  padding: 80px 0;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 60px 0;
+  }
+}
+
+// Section-specific layouts
+.section-stats {
+  padding: 40px 0;
+  background-color: #f8fafc;
+  z-index: 10;
+  margin-top: -40px;
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+}
+
+.section-courses {
+  background-color: #ffffff;
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+}
+
+.section-why-us {
+  background-color: #f8fafc; // Alternate background
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+}
+
+// Custom timeline stepper for learning process
+.section-process {
+  background-color: #ffffff;
+
+  .process-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    margin-top: 40px;
+    gap: 20px;
+
+    @media (max-width: 992px) {
+      flex-direction: column;
+      gap: 40px;
+    }
+  }
+
+  .process-step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+
+    @media (max-width: 992px) {
+      flex-direction: row;
+      text-align: left;
+      align-items: flex-start;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .step-icon-outer {
+      position: relative;
+      margin-bottom: 20px;
+
+      @media (max-width: 992px) {
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+
+      .step-number {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: var(--mat-sys-primary, #1976d2);
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 700;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(25, 118, 210, 0.3);
+        z-index: 2;
+      }
+
+      .step-icon-inner {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        border: 3px solid rgba(25, 118, 210, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--mat-sys-primary, #1976d2);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+
+        mat-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+
+    &:hover .step-icon-inner {
+      border-color: var(--mat-sys-primary, #1976d2);
+      background-color: var(--mat-sys-primary, #1976d2);
+      color: #ffffff;
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(25, 118, 210, 0.2);
+    }
+
+    .step-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @media (max-width: 992px) {
+        align-items: flex-start;
+      }
+    }
+
+    .step-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 8px 0;
+    }
+
+    .step-description {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #64748b;
+      margin: 0;
+      max-width: 200px;
+
+      @media (max-width: 992px) {
+        max-width: 100%;
+      }
+    }
+
+    // Connector lines for desktop
+    .connector-line {
+      position: absolute;
+      top: 35px;
+      left: calc(50% + 45px);
+      width: calc(100% - 90px);
+      height: 3px;
+      background-color: rgba(25, 118, 210, 0.08);
+      z-index: 1;
+
+      @media (max-width: 992px) {
+        left: 35px;
+        top: 70px;
+        width: 3px;
+        height: calc(100% + 20px);
+      }
+    }
+  }
+}
+
+.section-testimonials {
+  background-color: #f8fafc;
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+}
+
+.section-gallery {
+  background-color: #ffffff;
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.section-faq {
+  background-color: #f8fafc;
+
+  .faq-inner-container {
+    max-width: 800px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.section-contact {
+  background-color: #ffffff;
+}

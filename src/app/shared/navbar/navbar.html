@@ -1,0 +1,44 @@
+<mat-toolbar color="default" class="main-navbar">
+  <div class="nav-container">
+    <!-- Mobile Burger Menu -->
+    <button mat-icon-button (click)="toggleMenu()" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <!-- Brand Logo/Title -->
+    <a href="#" (click)="scrollToSection('#home', $event)" class="brand-link">
+      <img src="images/logo.png" alt="Khandelwal Computers Logo" class="brand-logo" />
+      <span class="brand-name">Khandelwal Computers</span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <div class="desktop-nav-links">
+      @for (link of navLinks; track link.path) {
+        <a 
+          href="javascript:void(0)" 
+          (click)="scrollToSection(link.path, $event)" 
+          class="nav-link"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </div>
+
+    <!-- CTA Button -->
+    <div class="nav-actions">
+      @if (isLoggedIn()) {
+        <app-secondary-button 
+          label="Logout" 
+          icon="logout" 
+          (clicked)="logout()"
+        ></app-secondary-button>
+      } @else {
+        <app-secondary-button 
+          label="Student Portal" 
+          icon="login" 
+          (clicked)="goToLogin()"
+        ></app-secondary-button>
+      }
+    </div>
+  </div>
+</mat-toolbar>

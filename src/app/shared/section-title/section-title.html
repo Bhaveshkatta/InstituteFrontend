@@ -1,0 +1,11 @@
+<div class="section-title-wrapper" [class.centered]="centered()" [class.light-text]="lightTheme()">
+  @if (subtitle()) {
+    <span class="subtitle">{{ subtitle() }}</span>
+  }
+  <h2 class="title">{{ title() }}</h2>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line"></div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<mat-card class="stat-card" [style.border-top-color]="statistic().color || '#1976d2'">
+  <mat-card-content class="card-body">
+    <div class="icon-container" [style.background-color]="(statistic().color + '15') || '#1976d215'" [style.color]="statistic().color || '#1976d2'">
+      <mat-icon>{{ statistic().icon }}</mat-icon>
+    </div>
+    <div class="stat-content">
+      <h3 class="stat-value" [style.color]="statistic().color || '#1976d2'">{{ statistic().value }}</h3>
+      <p class="stat-label">{{ statistic().label }}</p>
+    </div>
+  </mat-card-content>
+</mat-card>

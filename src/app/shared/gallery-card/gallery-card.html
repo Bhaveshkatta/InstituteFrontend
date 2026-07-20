@@ -1,0 +1,9 @@
+<div class="gallery-card-container">
+  <img [src]="imageUrl()" [alt]="title()" class="gallery-image" loading="lazy" />
+  <div class="image-overlay">
+    <div class="overlay-content">
+      <mat-icon class="zoom-icon">zoom_in</mat-icon>
+      <h4 class="image-title">{{ title() }}</h4>
+    </div>
+  </div>
+</div>

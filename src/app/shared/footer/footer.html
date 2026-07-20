@@ -1,0 +1,72 @@
+<footer class="footer-wrapper">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Col 1: Brand & Desc -->
+      <div class="footer-col brand-col">
+        <div class="brand-header">
+          <img src="images/logo.png" alt="Khandelwal Computers Logo" class="footer-logo" />
+          <span class="footer-brand-name">Khandelwal Computers</span>
+        </div>
+        <p class="brand-desc">
+          Empowering students with industry-relevant computer education, practical training, and job-oriented courses since 2011.
+        </p>
+        <div class="social-links">
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook"><mat-icon>facebook</mat-icon></a>
+          <a href="https://twitter.com" target="_blank" aria-label="Twitter"><mat-icon>alternate_email</mat-icon></a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><mat-icon>workspace_premium</mat-icon></a>
+          <a href="https://youtube.com" target="_blank" aria-label="YouTube"><mat-icon>play_circle</mat-icon></a>
+        </div>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div class="footer-col links-col">
+        <h4 class="col-title">Quick Links</h4>
+        <ul class="col-links-list">
+          <li><a href="#" (click)="scrollToSection('#home', $event)">Home</a></li>
+          <li><a href="#" (click)="scrollToSection('#about', $event)">Why Choose Us</a></li>
+          <li><a href="#" (click)="scrollToSection('#courses', $event)">Our Courses</a></li>
+          <li><a href="#" (click)="scrollToSection('#process', $event)">Learning Process</a></li>
+          <li><a href="#" (click)="scrollToSection('#gallery', $event)">Institute Gallery</a></li>
+          <li><a href="#" (click)="scrollToSection('#faq', $event)">FAQs</a></li>
+          <li><a href="#" (click)="scrollToSection('#contact', $event)">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Popular Courses -->
+      <div class="footer-col links-col">
+        <h4 class="col-title">Popular Courses</h4>
+        <ul class="col-links-list">
+          <li><a href="#" (click)="scrollToSection('#courses', $event)">Full Stack Web Development</a></li>
+          <li><a href="#" (click)="scrollToSection('#courses', $event)">Python & Data Science</a></li>
+          <li><a href="#" (click)="scrollToSection('#courses', $event)">Tally Prime with GST</a></li>
+          <li><a href="#" (click)="scrollToSection('#courses', $event)">CCC & NIELIT O-Level</a></li>
+          <li><a href="#" (click)="scrollToSection('#courses', $event)">Cyber Security</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Newsletter -->
+      <div class="footer-col newsletter-col">
+        <h4 class="col-title">Newsletter</h4>
+        <p class="newsletter-desc">Subscribe to receive updates, course announcements, and career tips directly in your inbox.</p>
+        
+        <div class="newsletter-form">
+          <mat-form-field appearance="outline" class="subscribe-input">
+            <mat-label>Email Address</mat-label>
+            <input matInput #emailInput placeholder="enter email..." type="email" (keyup.enter)="onSubscribe(emailInput)" />
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+          <app-primary-button
+            label="Subscribe"
+            icon="notifications"
+            (clicked)="onSubscribe(emailInput)"
+          ></app-primary-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} Khandelwal Computers. All Rights Reserved.</p>
+      <p class="dev-info">Designed with <mat-icon class="heart-icon">favorite</mat-icon> using Angular Material 3</p>
+    </div>
+  </div>
+</footer>

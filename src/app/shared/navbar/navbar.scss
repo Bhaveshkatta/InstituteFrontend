@@ -1,0 +1,119 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-navbar {
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+  padding: 0;
+
+  .nav-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 100%;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--mat-sys-on-surface, #1e293b);
+
+    .brand-logo {
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--mat-sys-primary, #1976d2), var(--mat-sys-tertiary, #1565c0));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      
+      @media (max-width: 576px) {
+        font-size: 17px;
+      }
+    }
+  }
+
+  .desktop-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    @media (max-width: 992px) {
+      display: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--mat-sys-on-surface-variant, #475569);
+      position: relative;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--mat-sys-primary, #1976d2);
+        transition: width 0.3s ease;
+      }
+
+      &:hover {
+        color: var(--mat-sys-primary, #1976d2);
+        
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 992px) {
+      display: none;
+    }
+
+    app-secondary-button {
+      ::ng-deep .secondary-btn {
+        height: 40px;
+        padding: 0 16px;
+        font-size: 13.5px;
+        border-radius: 20px;
+      }
+    }
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    color: var(--mat-sys-on-surface, #1e293b);
+
+    @media (max-width: 992px) {
+      display: inline-flex;
+    }
+  }
+}

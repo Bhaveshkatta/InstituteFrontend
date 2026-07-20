@@ -1,0 +1,154 @@
+.contact-card-outer {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  background-color: #ffffff;
+  padding: 0;
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1.8fr;
+    padding: 0;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Left Info Section (Blue primary background)
+  .contact-info {
+    background: linear-gradient(135deg, var(--mat-sys-primary, #1976d2) 0%, var(--mat-sys-tertiary, #1565c0) 100%);
+    color: #ffffff;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @media (max-width: 576px) {
+      padding: 32px 24px;
+    }
+
+    .info-header {
+      margin-bottom: 32px;
+
+      .info-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.5px;
+      }
+
+      .info-desc {
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0;
+      }
+    }
+
+    .info-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+
+      .info-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        backdrop-filter: blur(4px);
+
+        mat-icon {
+          color: #ffffff;
+          font-size: 22px;
+          width: 22px;
+          height: 22px;
+        }
+      }
+
+      .info-item-content {
+        h4 {
+          font-size: 15px;
+          font-weight: 600;
+          margin: 0 0 4px 0;
+          color: #ffffff;
+        }
+
+        p {
+          font-size: 13.5px;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.8);
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  // Right Form Section
+  .contact-form-wrapper {
+    padding: 48px;
+    position: relative;
+    background-color: #ffffff;
+
+    @media (max-width: 576px) {
+      padding: 32px 24px;
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--mat-sys-on-surface, #1e293b);
+      margin: 0 0 24px 0;
+    }
+
+    .form-element {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      width: 100%;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .form-submit {
+      margin-top: 12px;
+      
+      app-primary-button {
+        display: inline-block;
+
+        @media (max-width: 576px) {
+          display: block;
+          ::ng-deep .primary-btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Custom Snack bar styles
+::ng-deep .snackbar-success {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+  
+  .mat-mdc-simple-snack-bar-action {
+    color: #ffffff !important;
+  }
+}

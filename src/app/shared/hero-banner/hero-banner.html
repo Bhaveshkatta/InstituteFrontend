@@ -1,0 +1,109 @@
+<section class="hero-section" id="home">
+  <!-- Glowing Background Orbs -->
+  <div class="glow-orb orb-primary"></div>
+  <div class="glow-orb orb-secondary"></div>
+
+  <div class="hero-container">
+    <!-- Left Hero Info -->
+    <div class="hero-info-wrapper">
+      <div class="badge-container">
+        <mat-icon class="badge-icon">verified</mat-icon>
+        <span class="badge-text">Govt. Registered Computer Institute</span>
+      </div>
+
+      <h1 class="hero-heading">
+        Unlock Your Potential with <span class="highlight">Khandelwal Computers</span>
+      </h1>
+      
+      <p class="hero-subheading">
+        Master high-demand tech skills with 100% practical training. Learn programming, accounts, databases, and prep for government IT certifications under expert guidance.
+      </p>
+
+      <div class="hero-ctas">
+        <app-primary-button 
+          label="Explore Courses" 
+          icon="east" 
+          (clicked)="onExplore()"
+        ></app-primary-button>
+        
+        <app-secondary-button 
+          label="Contact Us" 
+          icon="chat_bubble_outline" 
+          (clicked)="onContact()"
+        ></app-secondary-button>
+      </div>
+
+      <div class="hero-trust-elements">
+        <div class="trust-item">
+          <mat-icon class="trust-icon">check_circle</mat-icon>
+          <span>Free Demo Classes</span>
+        </div>
+        <div class="trust-item">
+          <mat-icon class="trust-icon">check_circle</mat-icon>
+          <span>Installment Fee Option</span>
+        </div>
+        <div class="trust-item">
+          <mat-icon class="trust-icon">check_circle</mat-icon>
+          <span>Live Project Work</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Hero Visuals -->
+    <div class="hero-visual-wrapper">
+      <!-- Glassmorphic Terminal Mockup -->
+      <div class="terminal-mockup">
+        <div class="terminal-header">
+          <div class="window-dot red"></div>
+          <div class="window-dot yellow"></div>
+          <div class="window-dot green"></div>
+          <span class="window-title">main.ts - KhandelwalComputers</span>
+        </div>
+        <div class="terminal-body">
+          <pre class="code-lines"><code><span class="keyword">import</span> &#123; <span class="className">Student</span>, <span class="className">Course</span> &#125; <span class="keyword">from</span> <span class="string">'./career'</span>;
+
+<span class="keyword">const</span> <span class="variable">student</span> = <span class="keyword">new</span> <span class="className">Student</span>(&#123;
+  <span class="property">name</span>: <span class="string">'You'</span>,
+  <span class="property">readyToLearn</span>: <span class="keyword">true</span>
+&#125;);
+
+<span class="keyword">const</span> <span class="variable">course</span> = <span class="keyword">new</span> <span class="className">Course</span>(&#123;
+  <span class="property">title</span>: <span class="string">'Full Stack Web Development'</span>,
+  <span class="property">focus</span>: <span class="string">'100% Practical Project-Based'</span>
+&#125;);
+
+<span class="comment">// Start your transformation</span>
+<span class="variable">student</span>.<span class="method">enroll</span>(<span class="variable">course</span>);
+<span class="variable">student</span>.<span class="method">practiceDaily</span>();
+<span class="variable">student</span>.<span class="method">getCertified</span>();
+
+<span class="keyword">if</span> (<span class="variable">student</span>.<span class="property">hasDreamJob</span>) &#123;
+  <span class="builtIn">console</span>.<span class="method">log</span>(<span class="string">'Career Transformed! 🚀'</span>);
+&#125;</code></pre>
+        </div>
+      </div>
+
+      <!-- Float Badge: Certified -->
+      <div class="float-badge certified-badge">
+        <div class="badge-inner">
+          <mat-icon class="badge-icon-check">workspace_premium</mat-icon>
+          <div class="badge-info">
+            <h4>ISO 9001:2015</h4>
+            <p>Certified Institute</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Float Badge: Support -->
+      <div class="float-badge support-badge">
+        <div class="badge-inner">
+          <mat-icon class="badge-icon-chat">support_agent</mat-icon>
+          <div class="badge-info">
+            <h4>1-on-1 Help</h4>
+            <p>Lab Mentorship</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

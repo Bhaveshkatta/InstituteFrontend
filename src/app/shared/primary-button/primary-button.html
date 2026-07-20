@@ -1,0 +1,13 @@
+<button
+  mat-flat-button
+  color="primary"
+  [type]="btnType()"
+  [disabled]="disabled()"
+  (click)="onClick($event)"
+  class="primary-btn"
+>
+  @if (icon()) {
+    <mat-icon class="btn-icon">{{ icon() }}</mat-icon>
+  }
+  <span class="btn-label">{{ label() }}</span>
+</button>

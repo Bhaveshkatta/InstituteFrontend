@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { MATERIAL_IMPORTS } from '../../../../shared/ui/material.imports';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,9 @@ import { MATERIAL_IMPORTS } from '../../../../shared/ui/material.imports';
   styleUrl: './login.scss',
 })
 export class Login {
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -36,10 +40,14 @@ export class Login {
       this.isLoading.set(false);
       this.loginSuccess.set(true);
       
-      // Auto-hide success state after 3 seconds
+      this.authService.login();
+      
+      // Navigate to landing page after showing success state briefly
       setTimeout(() => {
         this.loginSuccess.set(false);
-      }, 3000);
+        this.router.navigate(['/']);
+      }, 1500);
     }, 1500);
   }
 }
+

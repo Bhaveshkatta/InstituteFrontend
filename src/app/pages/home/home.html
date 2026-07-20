@@ -1,0 +1,206 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Mobile Sidenav Sidenav Drawer -->
+  <mat-sidenav #sidenav mode="over" [opened]="isSidenavOpen()" (closedStart)="isSidenavOpen.set(false)" class="mobile-sidenav">
+    <div class="sidenav-header">
+      <img src="images/logo.png" alt="Khandelwal Computers Logo" class="sidenav-logo" />
+      <span class="sidenav-brand">Khandelwal Computers</span>
+      <button mat-icon-button (click)="toggleSidenav()" aria-label="Close menu" class="close-btn">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <mat-nav-list class="sidenav-list">
+      <a mat-list-item (click)="scrollToSection('#home')">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span matListItemTitle>Home</span>
+      </a>
+      <a mat-list-item (click)="scrollToSection('#courses')">
+        <mat-icon matListItemIcon>school</mat-icon>
+        <span matListItemTitle>Courses</span>
+      </a>
+      <a mat-list-item (click)="scrollToSection('#about')">
+        <mat-icon matListItemIcon>verified</mat-icon>
+        <span matListItemTitle>Why Choose Us</span>
+      </a>
+      <a mat-list-item (click)="scrollToSection('#process')">
+        <mat-icon matListItemIcon>timeline</mat-icon>
+        <span matListItemTitle>Learning Process</span>
+      </a>
+      <a mat-list-item (click)="scrollToSection('#gallery')">
+        <mat-icon matListItemIcon>photo_library</mat-icon>
+        <span matListItemTitle>Gallery</span>
+      </a>
+      <a mat-list-item (click)="scrollToSection('#faq')">
+        <mat-icon matListItemIcon>help</mat-icon>
+        <span matListItemTitle>FAQs</span>
+      </a>
+      <a mat-list-item (click)="scrollToSection('#contact')">
+        <mat-icon matListItemIcon>contact_mail</mat-icon>
+        <span matListItemTitle>Contact Us</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main Website Content Container -->
+  <mat-sidenav-content class="sidenav-content">
+    
+    <!-- Sticky Header Navigation -->
+    <app-navbar (menuToggled)="toggleSidenav()"></app-navbar>
+
+    <!-- 1. Hero Banner -->
+    <app-hero-banner
+      (exploreClicked)="scrollToSection('#courses')"
+      (contactClicked)="scrollToSection('#contact')"
+    ></app-hero-banner>
+
+    <!-- 2. Statistics Grid -->
+    <section class="section-stats">
+      <div class="container-width">
+        <div class="stats-grid">
+          @for (stat of statistics(); track stat.id) {
+            <app-statistic-card [statistic]="stat"></app-statistic-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Popular Courses -->
+    <section class="section-courses" id="courses">
+      <div class="container-width">
+        <app-section-title 
+          title="Explore Our Popular Courses" 
+          subtitle="Upgrade Your Skills"
+          [centered]="true"
+        ></app-section-title>
+        
+        <div class="courses-grid">
+          @for (course of courses(); track course.id) {
+            <app-course-card 
+              [course]="course" 
+              (enrollClicked)="handleEnrollClicked($event)"
+            ></app-course-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Why Choose Us -->
+    <section class="section-why-us" id="about">
+      <div class="container-width">
+        <app-section-title 
+          title="Why Khandelwal Computers?" 
+          subtitle="Core Features"
+          [centered]="true"
+        ></app-section-title>
+
+        <div class="features-grid">
+          @for (feat of features(); track feat.id) {
+            <app-feature-card [feature]="feat"></app-feature-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Learning Process -->
+    <section class="section-process" id="process">
+      <div class="container-width">
+        <app-section-title 
+          title="Our Simplified Learning Process" 
+          subtitle="How It Works"
+          [centered]="true"
+        ></app-section-title>
+
+        <div class="process-timeline">
+          @for (step of processSteps; track step.step; let last = $last) {
+            <div class="process-step-item">
+              <div class="step-icon-outer">
+                <div class="step-number">{{ step.step }}</div>
+                <div class="step-icon-inner">
+                  <mat-icon>{{ step.icon }}</mat-icon>
+                </div>
+              </div>
+              <div class="step-content">
+                <h3 class="step-title">{{ step.title }}</h3>
+                <p class="step-description">{{ step.description }}</p>
+              </div>
+              @if (!last) {
+                <div class="connector-line"></div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Testimonials -->
+    <section class="section-testimonials">
+      <div class="container-width">
+        <app-section-title 
+          title="What Our Students Say" 
+          subtitle="Testimonials"
+          [centered]="true"
+        ></app-section-title>
+
+        <div class="testimonials-grid">
+          @for (test of testimonials(); track test.id) {
+            <app-testimonial-card [testimonial]="test"></app-testimonial-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Gallery -->
+    <section class="section-gallery" id="gallery">
+      <div class="container-width">
+        <app-section-title 
+          title="Take a Look Around Our Campus" 
+          subtitle="Institute Gallery"
+          [centered]="true"
+        ></app-section-title>
+
+        <div class="gallery-grid">
+          @for (img of galleryImages(); track $index) {
+            <app-gallery-card 
+              [imageUrl]="img" 
+              [title]="'Campus View ' + ($index + 1)"
+            ></app-gallery-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. FAQ Section -->
+    <section class="section-faq" id="faq">
+      <div class="container-width faq-inner-container">
+        <app-section-title 
+          title="Frequently Asked Questions" 
+          subtitle="Common Queries"
+          [centered]="true"
+        ></app-section-title>
+
+        <div class="faq-list">
+          @for (faq of faqs(); track faq.id) {
+            <app-faq-item [faq]="faq"></app-faq-item>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Contact Section -->
+    <section class="section-contact" id="contact">
+      <div class="container-width">
+        <app-section-title 
+          title="Contact Our Admission Team" 
+          subtitle="Have Questions?"
+          [centered]="true"
+        ></app-section-title>
+
+        <app-contact-card></app-contact-card>
+      </div>
+    </section>
+
+    <!-- 10. Footer -->
+    <app-footer></app-footer>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
