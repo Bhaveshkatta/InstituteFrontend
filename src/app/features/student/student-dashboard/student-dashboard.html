@@ -1,0 +1,222 @@
+<div class="dashboard-shell">
+
+  <!-- ═══════════════════════════════════════════════════ SIDEBAR -->
+  <aside class="sidebar" [class.open]="sidebarOpen()">
+    <div class="sidebar-logo">
+      <img src="images/logo.png" alt="KC Logo" class="nav-logo-img" />
+      <span class="nav-brand">Khandelwal<br><span class="accent">Computers</span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" routerLink="/student/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/student/courses">
+        <mat-icon>school</mat-icon>
+        <span>Courses</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>calendar_month</mat-icon>
+        <span>Timetable</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Fee Details</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>workspace_premium</mat-icon>
+        <span>Certificates</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>support_agent</mat-icon>
+        <span>Support</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════ MAIN AREA -->
+  <div class="main-area">
+
+    <!-- TOP NAV BAR -->
+    <header class="top-bar">
+      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <div class="top-bar-title">
+        <span>Student Dashboard</span>
+      </div>
+
+      <div class="top-bar-right">
+        <button class="icon-btn" mat-icon-button aria-label="Notifications">
+          <mat-icon>notifications</mat-icon>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="avatar-chip">
+          <div class="avatar-circle">{{ avatarInitials() }}</div>
+          <div class="avatar-info">
+            <span class="avatar-name">{{ studentName() }}</span>
+            <span class="avatar-id">{{ studentId() }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+
+      <!-- WELCOME STRIP -->
+      <section class="welcome-strip">
+        <div class="welcome-text">
+          <h1>Welcome back, <span class="accent-text">{{ studentName().split(' ')[0] }}</span> 👋</h1>
+          <p class="welcome-date">{{ today() }}</p>
+        </div>
+        <div class="welcome-badge">
+          <mat-icon>school</mat-icon>
+          <span>Active Student</span>
+        </div>
+      </section>
+
+      <!-- STATS GRID -->
+      <section class="stats-grid">
+        @for (stat of stats(); track stat.label) {
+          <div class="stat-card" [style.--accent]="stat.color" [style.--bg]="stat.bg">
+            <div class="stat-icon-wrap">
+              <mat-icon [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ stat.value }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- TWO COLUMN ROW -->
+      <div class="two-col">
+
+        <!-- ENROLLED COURSES -->
+        <section class="card courses-card">
+          <div class="card-header">
+            <mat-icon>auto_stories</mat-icon>
+            <h2>My Courses</h2>
+            <a class="view-all-link" routerLink="/student/courses">View All</a>
+          </div>
+
+          <div class="courses-list">
+            @for (course of enrolledCourses(); track course.id) {
+              <div class="course-item">
+                <div class="course-icon" [style.--icon-color]="course.iconColor">
+                  <mat-icon [style.color]="course.iconColor">{{ course.icon }}</mat-icon>
+                </div>
+                <div class="course-details">
+                  <div class="course-top">
+                    <span class="course-title">{{ course.title }}</span>
+                    <span class="course-progress-label">{{ course.progress }}%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" [style.width.%]="course.progress" [style.background]="course.iconColor"></div>
+                  </div>
+                  <div class="course-meta">
+                    <span><mat-icon>schedule</mat-icon> Next: {{ course.nextClass }}</span>
+                    <span><mat-icon>person</mat-icon> {{ course.instructor }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- SCHEDULE -->
+        <section class="card schedule-card">
+          <div class="card-header">
+            <mat-icon>event_note</mat-icon>
+            <h2>Today's Schedule</h2>
+          </div>
+
+          <div class="schedule-timeline">
+            @for (item of schedule(); track item.time) {
+              <div class="timeline-item" [attr.data-type]="item.type">
+                <div class="timeline-dot" [attr.data-type]="item.type"></div>
+                <div class="timeline-body">
+                  <div class="timeline-time">{{ item.time }}</div>
+                  <div class="timeline-subject">{{ item.subject }}</div>
+                  <div class="timeline-meta">
+                    <span><mat-icon>person</mat-icon>{{ item.instructor }}</span>
+                    <span><mat-icon>room</mat-icon>{{ item.room }}</span>
+                    <span class="type-badge" [attr.data-type]="item.type">{{ item.type | titlecase }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+      </div><!-- /two-col -->
+
+      <!-- BOTTOM ROW -->
+      <div class="two-col">
+
+        <!-- ANNOUNCEMENTS -->
+        <section class="card announcements-card">
+          <div class="card-header">
+            <mat-icon>campaign</mat-icon>
+            <h2>Announcements</h2>
+          </div>
+
+          <div class="announcements-list">
+            @for (ann of announcements(); track ann.id) {
+              <div class="announcement-item" [attr.data-priority]="ann.priority">
+                <div class="ann-icon-wrap">
+                  <mat-icon>{{ ann.icon }}</mat-icon>
+                </div>
+                <div class="ann-body">
+                  <div class="ann-top">
+                    <span class="ann-title">{{ ann.title }}</span>
+                    <span class="ann-date">{{ ann.date }}</span>
+                  </div>
+                  <p class="ann-text">{{ ann.body }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- QUICK ACTIONS -->
+        <section class="card quick-actions-card">
+          <div class="card-header">
+            <mat-icon>bolt</mat-icon>
+            <h2>Quick Actions</h2>
+          </div>
+
+          <div class="quick-actions-grid">
+            @for (action of quickActions; track action.label) {
+              <button class="quick-action-btn" [style.--qa-color]="action.color">
+                <div class="qa-icon-wrap">
+                  <mat-icon [style.color]="action.color">{{ action.icon }}</mat-icon>
+                </div>
+                <span>{{ action.label }}</span>
+              </button>
+            }
+          </div>
+        </section>
+
+      </div><!-- /two-col -->
+
+    </main><!-- /page-content -->
+  </div><!-- /main-area -->
+
+  <!-- Overlay for mobile sidebar -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
+
+</div>

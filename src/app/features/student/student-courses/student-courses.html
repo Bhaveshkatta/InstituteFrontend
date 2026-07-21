@@ -1,0 +1,235 @@
+<div class="dashboard-shell">
+
+  <!-- ═══════════════════════════════════════════════════ SIDEBAR -->
+  <aside class="sidebar" [class.open]="sidebarOpen()">
+    <div class="sidebar-logo">
+      <img src="images/logo.png" alt="KC Logo" class="nav-logo-img" />
+      <span class="nav-brand">Khandelwal<br><span class="accent">Computers</span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item" routerLink="/student/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item active" routerLink="/student/courses">
+        <mat-icon>school</mat-icon>
+        <span>Courses</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>calendar_month</mat-icon>
+        <span>Timetable</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Fee Details</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>workspace_premium</mat-icon>
+        <span>Certificates</span>
+      </a>
+      <a class="nav-item" href="#">
+        <mat-icon>support_agent</mat-icon>
+        <span>Support</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════ MAIN AREA -->
+  <div class="main-area">
+
+    <!-- TOP NAV BAR -->
+    <header class="top-bar">
+      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="top-bar-title">
+        <span>Available Courses</span>
+      </div>
+      <div class="top-bar-right">
+        <button class="icon-btn" mat-icon-button aria-label="Notifications">
+          <mat-icon>notifications</mat-icon>
+          <span class="notif-dot"></span>
+        </button>
+        <a routerLink="/student/dashboard" class="back-btn" mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+          <span>Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+
+      <!-- PAGE HEADER -->
+      <section class="page-header">
+        <div class="page-header-text">
+          <h1>Explore <span class="accent-text">Courses</span></h1>
+          <p>Browse all {{ totalCourses() }} available programs. You are enrolled in {{ enrolledCount() }} of them.</p>
+        </div>
+        <div class="page-header-badges">
+          <div class="badge-pill cyan">
+            <mat-icon>school</mat-icon>
+            <span>{{ totalCourses() }} Courses</span>
+          </div>
+          <div class="badge-pill green">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{ enrolledCount() }} Enrolled</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEARCH + FILTER BAR -->
+      <section class="filter-bar">
+        <div class="search-wrap">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search courses, topics, categories..."
+            [value]="searchQuery()"
+            (input)="onSearchChange($any($event.target).value)"
+            id="courses-search"
+          />
+          @if (searchQuery()) {
+            <button class="clear-search" (click)="onSearchChange('')" mat-icon-button>
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </div>
+
+        <div class="category-filters">
+          @for (cat of categories(); track cat) {
+            <button
+              class="cat-btn"
+              [class.active]="selectedCategory() === cat"
+              (click)="setCategory(cat)"
+            >
+              {{ cat }}
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- RESULTS COUNT -->
+      <div class="results-bar">
+        <span class="results-count">
+          Showing <strong>{{ filteredCourses().length }}</strong> course{{ filteredCourses().length !== 1 ? 's' : '' }}
+          @if (selectedCategory() !== 'All') { in <em>{{ selectedCategory() }}</em> }
+          @if (searchQuery()) { matching "<em>{{ searchQuery() }}</em>" }
+        </span>
+      </div>
+
+      <!-- COURSES GRID -->
+      @if (filteredCourses().length > 0) {
+        <div class="courses-grid">
+          @for (course of filteredCourses(); track course.id; let i = $index) {
+            <article class="course-card" [style.--i]="i" [class.enrolled]="course.enrolled">
+
+              <!-- Enrolled ribbon -->
+              @if (course.enrolled) {
+                <div class="enrolled-ribbon">
+                  <mat-icon>check</mat-icon>
+                  Enrolled
+                </div>
+              }
+
+              <!-- Card image -->
+              <div class="card-image">
+                <img [src]="course.image" [alt]="course.title" loading="lazy" />
+                <div class="image-overlay">
+                  <div class="course-icon-badge" [style.--ic]="course.iconColor">
+                    <mat-icon [style.color]="course.iconColor">{{ course.icon }}</mat-icon>
+                  </div>
+                </div>
+                <div class="card-category-tag">{{ course.category }}</div>
+              </div>
+
+              <!-- Card body -->
+              <div class="card-body">
+
+                <div class="card-top">
+                  <div class="level-badge" [attr.data-level]="course.level">{{ course.level }}</div>
+                  <div class="rating-row">
+                    <div class="stars">
+                      @for (star of getStars(course.rating); track star) {
+                        <mat-icon class="star" [class.half]="star + 0.5 === course.rating">star</mat-icon>
+                      }
+                    </div>
+                    <span class="rating-val">{{ course.rating }}</span>
+                    <span class="rating-count">({{ course.reviewsCount }})</span>
+                  </div>
+                </div>
+
+                <h2 class="course-title">{{ course.title }}</h2>
+                <p class="course-desc">{{ course.description }}</p>
+
+                <!-- Feature tags -->
+                <div class="feature-tags">
+                  @for (feat of course.features.slice(0, 3); track feat) {
+                    <span class="feat-tag">
+                      <mat-icon>check_small</mat-icon>
+                      {{ feat }}
+                    </span>
+                  }
+                  @if (course.features.length > 3) {
+                    <span class="feat-tag more">+{{ course.features.length - 3 }} more</span>
+                  }
+                </div>
+
+                <!-- Card footer -->
+                <div class="card-footer">
+                  <div class="course-info-row">
+                    <span class="info-chip">
+                      <mat-icon>schedule</mat-icon>
+                      {{ course.duration }}
+                    </span>
+                    <span class="course-price">{{ course.price }}</span>
+                  </div>
+
+                  @if (course.enrolled) {
+                    <button class="action-btn enrolled-btn">
+                      <mat-icon>play_circle</mat-icon>
+                      Continue Learning
+                    </button>
+                  } @else {
+                    <button class="action-btn enroll-btn" [style.--ic]="course.iconColor">
+                      <mat-icon>add_circle_outline</mat-icon>
+                      Enroll Now
+                    </button>
+                  }
+                </div>
+              </div>
+
+            </article>
+          }
+        </div>
+      } @else {
+        <!-- Empty state -->
+        <div class="empty-state">
+          <mat-icon>search_off</mat-icon>
+          <h3>No courses found</h3>
+          <p>Try adjusting your search or filter to find what you're looking for.</p>
+          <button class="action-btn enroll-btn" (click)="onSearchChange(''); setCategory('All')" style="--ic: #00e5ff; margin-top: 8px;">
+            <mat-icon>refresh</mat-icon>
+            Clear Filters
+          </button>
+        </div>
+      }
+
+    </main>
+  </div>
+
+  <!-- Mobile sidebar overlay -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
+
+</div>

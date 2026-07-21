@@ -45,7 +45,7 @@ export class Login {
       // Navigate to landing page after showing success state briefly
       setTimeout(() => {
         this.loginSuccess.set(false);
-        this.router.navigate(['/']);
+        this.router.navigate(['/student/dashboard']);
       }, 1500);
     }, 1500);
   }
