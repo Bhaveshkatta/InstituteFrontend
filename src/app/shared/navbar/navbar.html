@@ -13,14 +13,20 @@
 
     <!-- Desktop Navigation Links -->
     <div class="desktop-nav-links">
-      @for (link of navLinks; track link.path) {
-        <a 
-          href="javascript:void(0)" 
-          (click)="scrollToSection(link.path, $event)" 
-          class="nav-link"
-        >
-          {{ link.label }}
-        </a>
+      @for (link of navLinks; track link.label) {
+        @if (link.route) {
+          <a [routerLink]="link.route" class="nav-link">
+            {{ link.label }}
+          </a>
+        } @else {
+          <a 
+            href="javascript:void(0)" 
+            (click)="scrollToSection(link.path!, $event)" 
+            class="nav-link"
+          >
+            {{ link.label }}
+          </a>
+        }
       }
     </div>
 

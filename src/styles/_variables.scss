@@ -1,0 +1,37 @@
+// Color Palette & Design Tokens
+$primary: #00e5ff;
+$primary-dark: #00b3cc;
+$primary-glow: rgba(0, 229, 255, 0.25);
+
+$secondary: #a855f7;
+$secondary-dark: #9333ea;
+$secondary-glow: rgba(168, 85, 247, 0.25);
+
+$accent-amber: #f59e0b;
+$accent-green: #10b981;
+$accent-red: #ef4444;
+
+$bg-dark: #0f172a;
+$bg-darker: #090d16;
+$bg-card: rgba(15, 23, 42, 0.75);
+$bg-card-hover: rgba(30, 41, 59, 0.85);
+
+$border-subtle: rgba(255, 255, 255, 0.08);
+$border-primary: rgba(0, 229, 255, 0.3);
+$border-secondary: rgba(168, 85, 247, 0.3);
+
+$text-main: #f8fafc;
+$text-muted: #94a3b8;
+$text-dim: #64748b;
+
+$font-main: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-full: 9999px;
+
+$transition-fast: 0.15s ease;
+$transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);

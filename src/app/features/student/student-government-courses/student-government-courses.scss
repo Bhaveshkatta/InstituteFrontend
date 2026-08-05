@@ -1,0 +1,357 @@
+// ── Shared shell layout ──────────────────────────────────────────
+@use '../../../../styles/student-shell';
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mix;
+
+// ── Page-specific tokens ─────────────────────────────────────────
+$cyan:   #00e5ff;
+$purple: #a855f7;
+$green:  #10b981;
+$amber:  #f59e0b;
+
+// ── Section Banner ────────────────────────────────────────────────
+.section-banner {
+  padding: 24px;
+  border-radius: vars.$radius-lg;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+  border: 1px solid vars.$border-primary;
+
+  h1 {
+    margin: 0 0 6px 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    @include mix.respond-to('sm') { font-size: 1.15rem; }
+  }
+  p { margin: 0; color: vars.$text-muted; font-size: 0.9rem; }
+}
+
+// ── Schemes Grid ─────────────────────────────────────────────────
+.schemes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+
+  @include mix.respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scheme-item-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .scheme-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .seats-left {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: $green;
+
+      mat-icon { font-size: 16px; width: 16px; height: 16px; }
+    }
+  }
+
+  .scheme-title { margin: 0 0 6px 0; font-size: 1.15rem; font-weight: 700; }
+  .scheme-dept {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: vars.$primary;
+    margin: 0 0 12px 0;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+
+  .scheme-desc { font-size: 0.88rem; color: vars.$text-muted; line-height: 1.5; margin-bottom: 16px; }
+
+  .dates-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 20px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: vars.$radius-sm;
+    margin-bottom: 20px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+
+      .lbl { font-size: 0.75rem; color: vars.$text-dim; }
+      .val { font-size: 0.85rem; font-weight: 600; }
+    }
+  }
+
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+  }
+}
+
+// ── Badge Pill ────────────────────────────────────────────────────
+.badge-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(0, 229, 255, 0.12);
+  color: vars.$primary;
+  letter-spacing: 0.03em;
+}
+
+// ── Back Button ───────────────────────────────────────────────────
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: vars.$primary;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  padding: 4px 8px;
+  border-radius: vars.$radius-sm;
+
+  &:hover { background: rgba(0, 229, 255, 0.1); }
+}
+
+// ── Details View ──────────────────────────────────────────────────
+.details-view {
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+
+    .dept-text { font-size: 0.85rem; color: vars.$text-muted; }
+  }
+
+  .details-desc { font-size: 1rem; line-height: 1.6; color: vars.$text-muted; margin-bottom: 24px; }
+
+  .info-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    @include mix.respond-to('md') { grid-template-columns: 1fr; }
+
+    .info-box {
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: vars.$radius-md;
+      border: 1px solid vars.$border-subtle;
+
+      h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 12px 0;
+        font-size: 1rem;
+
+        mat-icon { color: vars.$primary; }
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+        color: vars.$text-muted;
+        font-size: 0.88rem;
+
+        li { margin-bottom: 6px; }
+      }
+    }
+  }
+
+  .dates-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(0, 229, 255, 0.05);
+    border-radius: vars.$radius-md;
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    margin-bottom: 28px;
+
+    .date-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .lbl { font-size: 0.78rem; color: vars.$text-muted; }
+      .val { font-size: 0.95rem; font-weight: 700; color: vars.$primary; }
+    }
+  }
+
+  .details-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    @include mix.respond-to('sm') {
+      justify-content: stretch;
+      app-button { width: 100%; }
+    }
+  }
+}
+
+// ── Application Form ──────────────────────────────────────────────
+.auto-fill-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: vars.$radius-md;
+  color: vars.$primary;
+  font-size: 0.88rem;
+  margin-bottom: 24px;
+}
+
+.app-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  .full-width { grid-column: 1 / -1; }
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+
+  @include mix.respond-to('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── My Applications ───────────────────────────────────────────────
+.my-apps-section {
+  margin-top: 8px;
+
+  .apps-table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .app-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: vars.$radius-sm;
+
+      .app-info {
+        display: flex;
+        flex-direction: column;
+
+        .app-id { font-weight: 700; color: vars.$primary; font-size: 0.85rem; }
+        .app-title { font-size: 0.9rem; font-weight: 500; }
+      }
+
+      .app-date { font-size: 0.8rem; color: vars.$text-muted; }
+
+      .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        background: rgba(16, 185, 129, 0.15);
+        color: $green;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// ── Success Screen ────────────────────────────────────────────────
+.success-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.success-card-content {
+  text-align: center;
+  padding: 20px 0;
+
+  .checkmark-circle {
+    color: $green;
+    margin-bottom: 12px;
+
+    mat-icon { font-size: 64px; width: 64px; height: 64px; }
+  }
+
+  h2 { margin: 0 0 6px 0; font-size: 1.5rem; }
+  .sub-text { color: vars.$text-muted; margin: 0 0 20px 0; font-size: 0.9rem; }
+
+  .app-id-box {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 12px 24px;
+    background: rgba(0, 229, 255, 0.12);
+    border: 1px dashed vars.$primary;
+    border-radius: vars.$radius-md;
+    margin-bottom: 24px;
+
+    .label { font-size: 0.75rem; color: vars.$text-muted; }
+    .ref-id { font-size: 1.4rem; font-weight: 800; color: vars.$primary; letter-spacing: 0.05em; }
+  }
+
+  .summary-box {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: vars.$radius-md;
+    padding: 16px;
+    margin-bottom: 24px;
+
+    .sum-item {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.88rem;
+
+      &:last-child { border-bottom: none; }
+      .lbl { color: vars.$text-muted; }
+      .val { font-weight: 600; }
+    }
+  }
+
+  .next-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: vars.$radius-sm;
+    color: $amber;
+    font-size: 0.85rem;
+    text-align: left;
+    margin-bottom: 24px;
+  }
+
+  .success-actions { display: flex; justify-content: center; }
+}

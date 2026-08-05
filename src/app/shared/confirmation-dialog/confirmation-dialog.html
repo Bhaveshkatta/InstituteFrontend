@@ -1,0 +1,25 @@
+<div class="confirm-dialog-card card-entrance">
+  <div class="dialog-header">
+    <div class="dialog-icon-wrap" [class.is-danger]="data.type === 'danger'" [class.is-warning]="data.type === 'warning'">
+      <mat-icon>{{ data.icon || (data.type === 'danger' ? 'warning' : 'help_outline') }}</mat-icon>
+    </div>
+    <h2 class="dialog-title">{{ data.title }}</h2>
+  </div>
+
+  <div class="dialog-body">
+    <p class="dialog-message">{{ data.message }}</p>
+  </div>
+
+  <div class="dialog-actions">
+    <app-button
+      [label]="data.cancelText || 'Cancel'"
+      variant="ghost"
+      (clicked)="onCancel()"
+    ></app-button>
+    <app-button
+      [label]="data.confirmText || 'Confirm'"
+      [variant]="data.type === 'danger' ? 'danger' : 'primary'"
+      (clicked)="onConfirm()"
+    ></app-button>
+  </div>
+</div>

@@ -1,0 +1,328 @@
+<div class="dashboard-shell">
+
+  <!-- ── SIDEBAR ────────────────────────────────────── -->
+  <app-student-sidebar
+    [isOpen]="sidebarOpen()"
+    (closed)="sidebarOpen.set(false)"
+  ></app-student-sidebar>
+
+  <!-- ── MOBILE OVERLAY ──────────────────────────────── -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
+  }
+
+  <!-- ── MAIN AREA ──────────────────────────────────── -->
+  <div class="main-area">
+    <header class="top-bar">
+      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="top-bar-title">
+        <span>Government Free Course Module</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="avatar-chip">
+          <div class="avatar-circle">{{ avatarInitials() }}</div>
+          <div class="avatar-info">
+            <span class="avatar-name">{{ studentProfile().fullName }}</span>
+            <span class="avatar-id">{{ studentProfile().studentId }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- STEP 1: SCHEME LIST -->
+      @if (currentStep() === 'list') {
+        <div class="section-banner card-entrance">
+          <div class="banner-text">
+            <h1>Active Government Sponsored Schemes</h1>
+            <p>Apply directly using your verified student profile. Instant seat allocation upon document verification at KC admin desk.</p>
+          </div>
+        </div>
+
+        <div class="schemes-grid">
+          @for (scheme of schemes(); track scheme.id) {
+            <app-card-wrapper>
+              <div class="scheme-item-card">
+                <div class="scheme-badge-row">
+                  <span class="badge-pill">{{ scheme.badge }}</span>
+                  <span class="seats-left"><mat-icon>airline_seat_recline_normal</mat-icon> {{ scheme.availableSeats }} seats remaining</span>
+                </div>
+                <h2 class="scheme-title">{{ scheme.title }}</h2>
+                <p class="scheme-dept"><mat-icon>verified_user</mat-icon> {{ scheme.department }}</p>
+                <p class="scheme-desc">{{ scheme.description }}</p>
+
+                <div class="dates-strip">
+                  <div>
+                    <span class="lbl">Last Date:</span>
+                    <span class="val">{{ scheme.importantDates.endDate }}</span>
+                  </div>
+                  <div>
+                    <span class="lbl">Batch Starts:</span>
+                    <span class="val">{{ scheme.importantDates.batchStart }}</span>
+                  </div>
+                </div>
+
+                <div class="action-row">
+                  <app-button
+                    label="View Details"
+                    prefixIcon="info"
+                    variant="outline"
+                    (clicked)="viewSchemeDetails(scheme)"
+                  ></app-button>
+                  <app-button
+                    label="Apply Now"
+                    prefixIcon="arrow_forward"
+                    variant="primary"
+                    (clicked)="startApplication(scheme)"
+                  ></app-button>
+                </div>
+              </div>
+            </app-card-wrapper>
+          }
+        </div>
+
+        <!-- MY SUBMITTED APPLICATIONS HISTORY -->
+        @if (myApplications().length > 0) {
+          <div class="my-apps-section">
+            <app-card-wrapper title="My Submitted Applications" icon="history">
+              <div class="apps-table">
+                @for (app of myApplications(); track app.id) {
+                  <div class="app-row">
+                    <div class="app-info">
+                      <span class="app-id">{{ app.id }}</span>
+                      <span class="app-title">{{ app.schemeTitle }}</span>
+                    </div>
+                    <div class="app-date">{{ app.registrationDate }}</div>
+                    <div class="app-status">
+                      <span class="status-badge">{{ app.status }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </app-card-wrapper>
+          </div>
+        }
+      }
+
+      <!-- STEP 2: SCHEME DETAILS -->
+      @if (currentStep() === 'details' && selectedScheme()) {
+        <div class="card-entrance">
+          <button class="back-btn" (click)="backToList()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Schemes</span>
+          </button>
+
+          <app-card-wrapper [title]="selectedScheme()?.title" icon="account_balance">
+            <div class="details-view">
+              <div class="badge-row">
+                <span class="badge-pill">{{ selectedScheme()?.badge }}</span>
+                <span class="dept-text">{{ selectedScheme()?.department }}</span>
+              </div>
+
+              <p class="details-desc">{{ selectedScheme()?.description }}</p>
+
+              <div class="info-columns">
+                <div class="info-box">
+                  <h3><mat-icon>fact_check</mat-icon> Eligibility Criteria</h3>
+                  <ul>
+                    @for (item of selectedScheme()?.eligibility; track item) {
+                      <li>{{ item }}</li>
+                    }
+                  </ul>
+                </div>
+
+                <div class="info-box">
+                  <h3><mat-icon>card_giftcard</mat-icon> Key Benefits</h3>
+                  <ul>
+                    @for (benefit of selectedScheme()?.benefits; track benefit) {
+                      <li>{{ benefit }}</li>
+                    }
+                  </ul>
+                </div>
+              </div>
+
+              <div class="dates-box">
+                <div class="date-item">
+                  <span class="lbl">Application Opens</span>
+                  <span class="val">{{ selectedScheme()?.importantDates?.startDate }}</span>
+                </div>
+                <div class="date-item">
+                  <span class="lbl">Application Deadline</span>
+                  <span class="val">{{ selectedScheme()?.importantDates?.endDate }}</span>
+                </div>
+                <div class="date-item">
+                  <span class="lbl">Classes Commence</span>
+                  <span class="val">{{ selectedScheme()?.importantDates?.batchStart }}</span>
+                </div>
+              </div>
+
+              <div class="details-actions">
+                <app-button
+                  label="Proceed to Apply"
+                  prefixIcon="assignment_turned_in"
+                  variant="primary"
+                  size="lg"
+                  (clicked)="startApplication(selectedScheme()!)"
+                ></app-button>
+              </div>
+            </div>
+          </app-card-wrapper>
+        </div>
+      }
+
+      <!-- STEP 3: APPLICATION FORM -->
+      @if (currentStep() === 'apply' && selectedScheme()) {
+        <div class="card-entrance">
+          <button class="back-btn" (click)="backToList()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Cancel Application</span>
+          </button>
+
+          <app-card-wrapper [title]="'Apply for ' + selectedScheme()?.title" icon="edit_note">
+            <div class="auto-fill-notice">
+              <mat-icon>auto_awesome</mat-icon>
+              <span>Known student profile information has been automatically pre-filled for you.</span>
+            </div>
+
+            <form [formGroup]="appForm" (ngSubmit)="onSubmitApplication()" class="app-form-grid">
+              <app-input-field
+                label="Full Name"
+                prefixIcon="person"
+                formControlName="fullName"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Email Address"
+                type="email"
+                prefixIcon="mail"
+                formControlName="email"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Mobile Phone Number"
+                type="tel"
+                prefixIcon="phone"
+                formControlName="phone"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Student ID"
+                prefixIcon="badge"
+                [value]="studentProfile().studentId"
+                [disabled]="true"
+                [readonly]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Category"
+                type="select"
+                prefixIcon="groups"
+                formControlName="category"
+                [options]="categoryOptions"
+              ></app-input-field>
+
+              <app-input-field
+                label="Highest Educational Qualification"
+                type="select"
+                prefixIcon="school"
+                formControlName="qualification"
+                [options]="qualificationOptions"
+              ></app-input-field>
+
+              <div class="full-width">
+                <app-input-field
+                  label="Residential Address"
+                  type="textarea"
+                  prefixIcon="home"
+                  formControlName="address"
+                  [rows]="2"
+                  [required]="true"
+                ></app-input-field>
+              </div>
+
+              <app-input-field
+                label="Pincode"
+                prefixIcon="pin"
+                formControlName="pincode"
+                [required]="true"
+              ></app-input-field>
+
+              <div class="full-width form-actions">
+                <app-button
+                  label="Submit Application"
+                  prefixIcon="send"
+                  btnType="submit"
+                  variant="primary"
+                  size="lg"
+                  [loading]="isSubmitting()"
+                ></app-button>
+              </div>
+            </form>
+          </app-card-wrapper>
+        </div>
+      }
+
+      <!-- STEP 4: SUCCESS SCREEN -->
+      @if (currentStep() === 'success' && submittedApp()) {
+        <div class="card-entrance success-container">
+          <app-card-wrapper>
+            <div class="success-card-content">
+              <div class="checkmark-circle">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+
+              <h2>Application Submitted Successfully!</h2>
+              <p class="sub-text">Your application has been registered with Khandelwal Computers administration.</p>
+
+              <div class="app-id-box">
+                <span class="label">Application Reference ID</span>
+                <span class="ref-id">{{ submittedApp()?.id }}</span>
+              </div>
+
+              <div class="summary-box">
+                <div class="sum-item">
+                  <span class="lbl">Scheme:</span>
+                  <span class="val">{{ submittedApp()?.schemeTitle }}</span>
+                </div>
+                <div class="sum-item">
+                  <span class="lbl">Applicant Name:</span>
+                  <span class="val">{{ submittedApp()?.fullName }}</span>
+                </div>
+                <div class="sum-item">
+                  <span class="lbl">Student ID:</span>
+                  <span class="val">{{ submittedApp()?.studentId }}</span>
+                </div>
+                <div class="sum-item">
+                  <span class="lbl">Submission Date:</span>
+                  <span class="val">{{ submittedApp()?.registrationDate }}</span>
+                </div>
+              </div>
+
+              <p class="next-steps">
+                <mat-icon>info</mat-icon>
+                <span>Please visit the institute admin desk with your Aadhaar Card and 10th/12th marksheets for document verification before {{ selectedScheme()?.importantDates?.endDate }}.</span>
+              </p>
+
+              <div class="success-actions">
+                <app-button
+                  label="Back to Schemes"
+                  prefixIcon="arrow_back"
+                  variant="primary"
+                  (clicked)="backToList()"
+                ></app-button>
+              </div>
+            </div>
+          </app-card-wrapper>
+        </div>
+      }
+
+    </main>
+  </div>
+
+</div>

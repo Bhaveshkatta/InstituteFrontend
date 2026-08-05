@@ -1,0 +1,32 @@
+<div class="card-wrapper-container" [class.is-glass]="glass">
+  @if (title || icon || actionLabel) {
+    <div class="card-header">
+      <div class="header-title-wrap">
+        @if (icon) {
+          <mat-icon class="header-icon">{{ icon }}</mat-icon>
+        }
+        <div>
+          @if (title) {
+            <h2 class="card-title">{{ title }}</h2>
+          }
+          @if (subtitle) {
+            <span class="card-subtitle">{{ subtitle }}</span>
+          }
+        </div>
+      </div>
+
+      @if (actionLabel) {
+        <button type="button" class="header-action-btn" (click)="onAction()">
+          <span>{{ actionLabel }}</span>
+          @if (actionIcon) {
+            <mat-icon>{{ actionIcon }}</mat-icon>
+          }
+        </button>
+      }
+    </div>
+  }
+
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+</div>

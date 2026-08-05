@@ -1,0 +1,192 @@
+<div class="dashboard-shell">
+
+  <!-- ── SIDEBAR ────────────────────────────────────── -->
+  <app-student-sidebar
+    [isOpen]="sidebarOpen()"
+    (closed)="sidebarOpen.set(false)"
+  ></app-student-sidebar>
+
+  <!-- ── MOBILE OVERLAY ──────────────────────────────── -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
+  }
+
+  <!-- ── MAIN AREA ──────────────────────────────────── -->
+  <div class="main-area">
+    <header class="top-bar">
+      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="top-bar-title">
+        <span>Student Profile</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="avatar-chip">
+          <div class="avatar-circle">{{ avatarInitials() }}</div>
+          <div class="avatar-info">
+            <span class="avatar-name">{{ studentData().fullName }}</span>
+            <span class="avatar-id">{{ studentData().studentId }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      @if (saveSuccess()) {
+        <div class="success-banner">
+          <mat-icon>check_circle</mat-icon>
+          <span>Profile updated successfully!</span>
+        </div>
+      }
+
+      <!-- PROFILE HEADER CARD -->
+      <app-card-wrapper>
+        <div class="profile-header-strip">
+          <div class="avatar-big">
+            <span>{{ avatarInitials() }}</span>
+          </div>
+          <div class="header-details">
+            <h1 class="user-name">{{ studentData().fullName }}</h1>
+            <p class="user-meta">
+              <span><mat-icon>badge</mat-icon> {{ studentData().studentId }}</span>
+              <span><mat-icon>email</mat-icon> {{ studentData().email }}</span>
+              <span><mat-icon>verified</mat-icon> Active Student</span>
+            </p>
+          </div>
+        </div>
+      </app-card-wrapper>
+
+      <div class="profile-grid">
+        <!-- PERSONAL DETAILS FORM -->
+        <app-card-wrapper title="Personal Details" icon="person">
+          <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" class="form-grid">
+            <app-input-field
+              label="Full Name"
+              prefixIcon="person"
+              formControlName="fullName"
+              [required]="true"
+              placeholder="Enter full name"
+            ></app-input-field>
+
+            <app-input-field
+              label="Email Address"
+              type="email"
+              prefixIcon="mail"
+              formControlName="email"
+              [required]="true"
+              placeholder="Enter email address"
+            ></app-input-field>
+
+            <app-input-field
+              label="Phone Number"
+              type="tel"
+              prefixIcon="phone"
+              formControlName="phone"
+              [required]="true"
+              placeholder="10 digit mobile number"
+              [customValidationMessages]="{ pattern: 'Must be a valid 10-digit mobile number' }"
+            ></app-input-field>
+
+            <app-input-field
+              label="Date of Birth"
+              type="date"
+              prefixIcon="calendar_today"
+              formControlName="dob"
+              [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+              label="Gender"
+              type="select"
+              prefixIcon="wc"
+              formControlName="gender"
+              [options]="genderOptions"
+            ></app-input-field>
+
+            <div class="full-width-col">
+              <app-input-field
+                label="Street Address"
+                type="textarea"
+                prefixIcon="home"
+                formControlName="address"
+                [rows]="3"
+                placeholder="Enter street address"
+              ></app-input-field>
+            </div>
+
+            <app-input-field
+              label="City"
+              prefixIcon="location_city"
+              formControlName="city"
+              placeholder="City"
+            ></app-input-field>
+
+            <app-input-field
+              label="State"
+              prefixIcon="map"
+              formControlName="state"
+              placeholder="State"
+            ></app-input-field>
+
+            <app-input-field
+              label="Pincode"
+              prefixIcon="pin"
+              formControlName="pincode"
+              placeholder="6-digit Pincode"
+            ></app-input-field>
+
+            <div class="full-width-col form-actions">
+              <app-button
+                label="Save Profile Changes"
+                prefixIcon="save"
+                btnType="submit"
+                variant="primary"
+                [loading]="isLoading()"
+              ></app-button>
+            </div>
+          </form>
+        </app-card-wrapper>
+
+        <!-- SECURITY FORM -->
+        <app-card-wrapper title="Security &amp; Password" icon="lock">
+          <form [formGroup]="securityForm" (ngSubmit)="onUpdatePassword()" class="security-form">
+            <app-input-field
+              label="Current Password"
+              type="password"
+              formControlName="currentPassword"
+              [required]="true"
+              placeholder="Enter current password"
+            ></app-input-field>
+
+            <app-input-field
+              label="New Password"
+              type="password"
+              formControlName="newPassword"
+              [required]="true"
+              placeholder="Enter new password"
+            ></app-input-field>
+
+            <app-input-field
+              label="Confirm New Password"
+              type="password"
+              formControlName="confirmPassword"
+              [required]="true"
+              placeholder="Confirm new password"
+            ></app-input-field>
+
+            <div class="form-actions">
+              <app-button
+                label="Update Password"
+                prefixIcon="lock_reset"
+                btnType="submit"
+                variant="secondary"
+                [loading]="isLoading()"
+              ></app-button>
+            </div>
+          </form>
+        </app-card-wrapper>
+      </div>
+    </main>
+  </div>
+
+</div>

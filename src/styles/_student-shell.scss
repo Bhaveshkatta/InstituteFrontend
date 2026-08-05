@@ -1,0 +1,224 @@
+/* ══════════════════════════════════════════════════════════════
+   STUDENT SHELL — Shared layout styles
+   Import this into every student page SCSS instead of
+   duplicating .dashboard-shell / .main-area / .top-bar etc.
+══════════════════════════════════════════════════════════════ */
+
+$bg-base:        #020308;
+$bg-sidebar:     rgba(4, 6, 16, 0.97);
+$bg-card:        rgba(10, 14, 32, 0.90);
+$border-subtle:  rgba(255, 255, 255, 0.06);
+$border-glow:    rgba(0, 229, 255, 0.18);
+$text-primary:   #f0f4ff;
+$text-secondary: #94a3b8;
+$text-muted:     #475569;
+$cyan:           #00e5ff;
+$purple:         #a855f7;
+$green:          #10b981;
+$amber:          #f59e0b;
+$sidebar-w:      260px;
+
+// ── Outer Shell ──────────────────────────────────────────
+.dashboard-shell {
+  display: flex;
+  min-height: 100vh;
+  background: $bg-base;
+  font-family: 'Roboto', sans-serif;
+  color: $text-primary;
+  position: relative;
+  overflow-x: hidden;
+
+  // Grid background
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(18, 24, 48, 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18, 24, 48, 0.18) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Ambient glow
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(0, 150, 255, 0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 75%, rgba(147, 51, 234, 0.08) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// ── Main Area (right of sidebar) ─────────────────────────
+.main-area {
+  flex: 1;
+  margin-left: $sidebar-w;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// ── Top Bar ───────────────────────────────────────────────
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 28px;
+  height: 68px;
+  background: rgba(4, 6, 16, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid $border-subtle;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 768px) {
+    padding: 0 16px;
+    height: 60px;
+  }
+}
+
+.menu-toggle {
+  display: none !important;
+  color: $text-secondary !important;
+
+  @media (max-width: 768px) {
+    display: flex !important;
+  }
+}
+
+.top-bar-title {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-primary;
+  letter-spacing: 0.5px;
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+  }
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
+}
+
+// ── Avatar Chip ───────────────────────────────────────────
+.avatar-chip-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.avatar-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid $border-subtle;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:hover { border-color: $border-glow; }
+}
+
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $cyan, $purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.avatar-info {
+  display: flex;
+  flex-direction: column;
+
+  .avatar-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-primary;
+    line-height: 1.3;
+  }
+
+  .avatar-id {
+    font-size: 11px;
+    color: $text-muted;
+  }
+
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+// ── Page Content ──────────────────────────────────────────
+.page-content {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    padding: 18px 16px;
+    gap: 18px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px 12px;
+    gap: 14px;
+  }
+}
+
+// ── Sidebar Overlay (mobile) ──────────────────────────────
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 199;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+// ── Notification Dot ──────────────────────────────────────
+.icon-btn {
+  position: relative;
+  color: $text-secondary !important;
+  &:hover { color: $text-primary !important; }
+
+  .notif-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $cyan;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+  }
+}

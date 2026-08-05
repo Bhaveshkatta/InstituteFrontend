@@ -1,46 +1,15 @@
 <div class="dashboard-shell">
 
   <!-- ═══════════════════════════════════════════════════ SIDEBAR -->
-  <aside class="sidebar" [class.open]="sidebarOpen()">
-    <div class="sidebar-logo">
-      <img src="images/logo.png" alt="KC Logo" class="nav-logo-img" />
-      <span class="nav-brand">Khandelwal<br><span class="accent">Computers</span></span>
-    </div>
+  <app-student-sidebar
+    [isOpen]="sidebarOpen()"
+    (closed)="sidebarOpen.set(false)"
+  ></app-student-sidebar>
 
-    <nav class="sidebar-nav">
-      <a class="nav-item" routerLink="/student/dashboard">
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
-      </a>
-      <a class="nav-item active" routerLink="/student/courses">
-        <mat-icon>school</mat-icon>
-        <span>Courses</span>
-      </a>
-      <a class="nav-item" href="#">
-        <mat-icon>calendar_month</mat-icon>
-        <span>Timetable</span>
-      </a>
-      <a class="nav-item" href="#">
-        <mat-icon>receipt_long</mat-icon>
-        <span>Fee Details</span>
-      </a>
-      <a class="nav-item" href="#">
-        <mat-icon>workspace_premium</mat-icon>
-        <span>Certificates</span>
-      </a>
-      <a class="nav-item" href="#">
-        <mat-icon>support_agent</mat-icon>
-        <span>Support</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <button class="logout-btn" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Logout</span>
-      </button>
-    </div>
-  </aside>
+  <!-- ═══════════════════════════════════════════════════ MOBILE OVERLAY -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
+  }
 
   <!-- ═══════════════════════════════════════════════════ MAIN AREA -->
   <div class="main-area">
@@ -226,10 +195,5 @@
 
     </main>
   </div>
-
-  <!-- Mobile sidebar overlay -->
-  @if (sidebarOpen()) {
-    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
-  }
 
 </div>

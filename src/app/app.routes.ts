@@ -19,6 +19,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/public/auth/forgot-password/forgot-password').then(m => m.ForgotPassword) 
     },
     {
+        path: 'government-courses',
+        loadComponent: () => import('./features/public/government-courses/public-government-courses').then(m => m.PublicGovernmentCourses)
+    },
+    {
         path: 'student',
         canActivate: [authGuard],
         children: [
@@ -29,6 +33,14 @@ export const routes: Routes = [
             {
                 path: 'courses',
                 loadComponent: () => import('./features/student/student-courses/student-courses').then(m => m.StudentCourses)
+            },
+            {
+                path: 'profile',
+                loadComponent: () => import('./features/student/student-profile/student-profile').then(m => m.StudentProfile)
+            },
+            {
+                path: 'government-courses',
+                loadComponent: () => import('./features/student/student-government-courses/student-government-courses').then(m => m.StudentGovernmentCourses)
             },
             {
                 path: '',
@@ -42,6 +54,3 @@ export const routes: Routes = [
         redirectTo: ''
     }
 ];
-
-
-

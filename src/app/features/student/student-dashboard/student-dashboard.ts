@@ -4,6 +4,9 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../services/auth.service';
+import { EmptyStateComponent } from '../../../shared/empty-state/empty-state';
+import { ButtonComponent } from '../../../shared/button/button';
+import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
 
 interface Course {
   id: string;
@@ -37,12 +40,22 @@ interface Announcement {
 
 @Component({
   selector: 'app-student-dashboard',
-  imports: [CommonModule, TitleCasePipe, MatIconModule, MatButtonModule, RouterLink],
+  standalone: true,
+  imports: [
+    CommonModule,
+    TitleCasePipe,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink,
+    EmptyStateComponent,
+    ButtonComponent,
+    StudentSidebarComponent
+  ],
   templateUrl: './student-dashboard.html',
   styleUrl: './student-dashboard.scss',
 })
 export class StudentDashboard {
-  private readonly router = inject(Router);
+  protected readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
   studentName = signal('Rahul Gupta');
@@ -70,6 +83,9 @@ export class StudentDashboard {
     { label: 'Upcoming Tests', value: '2', icon: 'quiz', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
     { label: 'Certificates', value: '1', icon: 'workspace_premium', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
   ]);
+
+  // Data signals with toggleable empty states for testing/demo
+  showEmptyState = signal(false);
 
   enrolledCourses = signal<Course[]>([
     {
@@ -115,7 +131,6 @@ export class StudentDashboard {
     { time: '12:00 PM', subject: 'Tally - GST Filing Practice', instructor: 'Mrs. Sunita Verma', room: 'Room 3', type: 'class' },
     { time: '04:00 PM', subject: 'Web Dev - Angular Routing', instructor: 'Mr. Ajay Khandelwal', room: 'Lab 1', type: 'class' },
     { time: '06:00 PM', subject: 'Web Dev - Mock Test', instructor: 'Mr. Ajay Khandelwal', room: 'Lab 1', type: 'test' },
-    { time: 'Tomorrow 10:00 AM', subject: 'Cyber Security - Metasploit', instructor: 'Mr. Vivek Sharma', room: 'Lab 2', type: 'lab' },
   ]);
 
   announcements = signal<Announcement[]>([
@@ -135,14 +150,6 @@ export class StudentDashboard {
       priority: 'medium',
       icon: 'quiz',
     },
-    {
-      id: 3,
-      title: 'Certificate Distribution – Tally Batch',
-      body: 'Students who completed the Tally Prime course (Batch Mar–Jun) can collect their certificates from the admin desk between 11 AM – 1 PM.',
-      date: '18 Jul 2026',
-      priority: 'low',
-      icon: 'workspace_premium',
-    },
   ]);
 
   quickActions = [
@@ -153,6 +160,10 @@ export class StudentDashboard {
   ];
 
   sidebarOpen = signal(false);
+
+  toggleEmptyDemo() {
+    this.showEmptyState.update(v => !v);
+  }
 
   toggleSidebar() {
     this.sidebarOpen.update((v) => !v);

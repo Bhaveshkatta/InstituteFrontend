@@ -1,0 +1,76 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+
+.card-wrapper-container {
+  border-radius: vars.$radius-lg;
+  padding: 24px;
+  background: vars.$bg-card;
+  border: 1px solid vars.$border-subtle;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+
+  &.is-glass {
+    @include mix.glass-card();
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .header-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .header-icon {
+        color: vars.$primary;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: vars.$text-main;
+      }
+
+      .card-subtitle {
+        font-size: 0.8rem;
+        color: vars.$text-muted;
+      }
+    }
+
+    .header-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: transparent;
+      border: none;
+      color: vars.$primary;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: vars.$radius-sm;
+      transition: vars.$transition-fast;
+
+      &:hover {
+        background: rgba(0, 229, 255, 0.1);
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .card-body {
+    width: 100%;
+  }
+}

@@ -1,0 +1,123 @@
+<div class="app-input-wrapper" [class.has-error]="showErrors" [class.is-disabled]="disabled">
+  @if (label) {
+    <label class="input-label">
+      {{ label }}
+      @if (required) {
+        <span class="required-star">*</span>
+      }
+    </label>
+  }
+
+  <div class="input-container">
+    <!-- TEXT / EMAIL / TEL / NUMBER / DATE -->
+    @if (type === 'text' || type === 'email' || type === 'tel' || type === 'number' || type === 'date') {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="custom-mat-field">
+        @if (prefixIcon) {
+          <mat-icon matPrefix>{{ prefixIcon }}</mat-icon>
+        }
+        <input
+          matInput
+          [type]="type"
+          [value]="val()"
+          [placeholder]="placeholder"
+          [disabled]="disabled"
+          [readonly]="readonly"
+          [attr.min]="min"
+          [attr.max]="max"
+          [attr.minlength]="minlength"
+          [attr.maxlength]="maxlength"
+          [attr.pattern]="pattern"
+          (input)="handleInput($event)"
+          (blur)="handleBlur()"
+        />
+        @if (suffixIcon) {
+          <mat-icon matSuffix>{{ suffixIcon }}</mat-icon>
+        }
+      </mat-form-field>
+    }
+
+    <!-- PASSWORD TYPE -->
+    @if (type === 'password') {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="custom-mat-field">
+        @if (prefixIcon) {
+          <mat-icon matPrefix>{{ prefixIcon }}</mat-icon>
+        } @else {
+          <mat-icon matPrefix>lock</mat-icon>
+        }
+        <input
+          matInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          [value]="val()"
+          [placeholder]="placeholder"
+          [disabled]="disabled"
+          [readonly]="readonly"
+          (input)="handleInput($event)"
+          (blur)="handleBlur()"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="'Toggle password visibility'"
+          class="visibility-btn"
+        >
+          <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+    }
+
+    <!-- TEXTAREA TYPE -->
+    @if (type === 'textarea') {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="custom-mat-field">
+        @if (prefixIcon) {
+          <mat-icon matPrefix>{{ prefixIcon }}</mat-icon>
+        }
+        <textarea
+          matInput
+          [rows]="rows"
+          [value]="val()"
+          [placeholder]="placeholder"
+          [disabled]="disabled"
+          [readonly]="readonly"
+          [attr.minlength]="minlength"
+          [attr.maxlength]="maxlength"
+          (input)="handleInput($event)"
+          (blur)="handleBlur()"
+        ></textarea>
+      </mat-form-field>
+    }
+
+    <!-- SELECT TYPE -->
+    @if (type === 'select') {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="custom-mat-field">
+        @if (prefixIcon) {
+          <mat-icon matPrefix>{{ prefixIcon }}</mat-icon>
+        }
+        <mat-select
+          [value]="val()"
+          [placeholder]="placeholder"
+          [disabled]="disabled"
+          (selectionChange)="handleSelectChange($event.value)"
+          (blur)="handleBlur()"
+        >
+          @for (opt of options; track opt.value) {
+            <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+
+  <!-- HELPER TEXT / HINT / ERROR -->
+  @if (showErrors) {
+    <div class="error-msg card-entrance">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  } @else if (hint || helperText) {
+    <div class="hint-msg">
+      <span>{{ hint || helperText }}</span>
+    </div>
+  }
+</div>

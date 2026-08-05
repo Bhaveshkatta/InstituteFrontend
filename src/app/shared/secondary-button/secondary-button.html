@@ -1,13 +1,8 @@
-<button
-  mat-stroked-button
-  color="primary"
-  [type]="btnType()"
+<app-button
+  [label]="label()"
+  variant="secondary"
   [disabled]="disabled()"
-  (click)="onClick($event)"
-  class="secondary-btn"
->
-  @if (icon()) {
-    <mat-icon class="btn-icon">{{ icon() }}</mat-icon>
-  }
-  <span class="btn-label">{{ label() }}</span>
-</button>
+  [icon]="icon() || ''"
+  [btnType]="$any(btnType())"
+  (clicked)="onClick($event)"
+></app-button>

@@ -1,0 +1,105 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+
+.app-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+
+  .input-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .required-star {
+      color: #ef4444;
+      font-weight: 700;
+    }
+  }
+
+  .custom-mat-field {
+    width: 100%;
+    
+    ::ng-deep {
+      .mdc-text-field--outlined {
+        background-color: rgba(15, 23, 42, 0.6) !important;
+        border-radius: 10px !important;
+
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+
+        &:hover .mdc-notched-outline__leading,
+        &:hover .mdc-notched-outline__notch,
+        &:hover .mdc-notched-outline__trailing {
+          border-color: rgba(0, 229, 255, 0.4) !important;
+        }
+
+        &.mdc-text-field--focused {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: #00e5ff !important;
+            border-width: 2px !important;
+          }
+        }
+      }
+
+      input.mat-mdc-input-element,
+      textarea.mat-mdc-input-element,
+      .mat-mdc-select-value-text {
+        color: #f8fafc !important;
+        font-family: vars.$font-main;
+      }
+
+      .mat-mdc-form-field-icon-prefix,
+      .mat-mdc-form-field-icon-suffix {
+        color: #94a3b8;
+      }
+    }
+  }
+
+  .visibility-btn {
+    color: #94a3b8;
+    &:hover {
+      color: #00e5ff;
+    }
+  }
+
+  .error-msg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #ef4444;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin-top: 2px;
+
+    .error-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .hint-msg {
+    font-size: 0.78rem;
+    color: #64748b;
+  }
+
+  &.has-error {
+    ::ng-deep .mdc-text-field--outlined {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #ef4444 !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,196 @@
+<app-navbar></app-navbar>
+
+<div class="public-govt-container">
+  <!-- HERO BANNER -->
+  <section class="govt-hero">
+    <div class="hero-badge">
+      <mat-icon>account_balance</mat-icon>
+      <span>Khandelwal Computers Announcement</span>
+    </div>
+    <h1>Government Free Course Schemes</h1>
+    <p class="hero-desc">
+      Explore government-sponsored skill development schemes with up to 100% fee waivers. Register your interest today to get priority contact when official batches open!
+    </p>
+    <div class="notice-callout">
+      <mat-icon class="info-icon">info</mat-icon>
+      <span><strong>Note:</strong> Interest registration on this site is managed solely by Khandelwal Computers to notify prospective students. It is not integrated with official government portals.</span>
+    </div>
+  </section>
+
+  <!-- SCHEMES LIST -->
+  <main class="schemes-section">
+    <div class="section-title">
+      <h2>Active Government Schemes</h2>
+      <p>Select a scheme to view eligibility criteria, important dates, and register interest.</p>
+    </div>
+
+    @if (schemes().length === 0) {
+      <app-empty-state
+        icon="account_balance"
+        title="No Government Schemes Currently Active"
+        description="We update new government-sponsored computer course schemes regularly. Please check back soon!"
+      ></app-empty-state>
+    } @else {
+      <div class="schemes-grid">
+        @for (scheme of schemes(); track scheme.id) {
+          <div class="scheme-card card-entrance">
+            <div class="scheme-header">
+              <span class="scheme-badge">{{ scheme.badge }}</span>
+              <span class="seats-left"><mat-icon>airline_seat_recline_normal</mat-icon> {{ scheme.availableSeats }} seats left</span>
+            </div>
+
+            <h3 class="scheme-title">{{ scheme.title }}</h3>
+            <p class="scheme-dept"><mat-icon>verified_user</mat-icon> {{ scheme.department }}</p>
+            <p class="scheme-desc">{{ scheme.description }}</p>
+
+            <div class="scheme-dates">
+              <div class="date-chip">
+                <span class="label">Reg. Closes</span>
+                <span class="val">{{ scheme.importantDates.endDate }}</span>
+              </div>
+              <div class="date-chip">
+                <span class="label">Batch Starts</span>
+                <span class="val">{{ scheme.importantDates.batchStart }}</span>
+              </div>
+            </div>
+
+            <div class="eligibility-box">
+              <h4><mat-icon>fact_check</mat-icon> Key Eligibility:</h4>
+              <ul>
+                @for (elig of scheme.eligibility; track elig) {
+                  <li>{{ elig }}</li>
+                }
+              </ul>
+            </div>
+
+            <div class="scheme-actions">
+              <app-button
+                label="Register Interest"
+                prefixIcon="assignment_turned_in"
+                variant="primary"
+                [fullWidth]="true"
+                (clicked)="openInterestModal(scheme)"
+              ></app-button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </main>
+</div>
+
+<!-- REGISTRATION MODAL -->
+@if (selectedScheme()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-card card-entrance" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <span class="modal-subtitle">Express Your Interest</span>
+          <h2 class="modal-title">{{ selectedScheme()?.title }}</h2>
+        </div>
+        <button class="close-btn" (click)="closeModal()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      @if (submittedApp()) {
+        <div class="success-screen">
+          <div class="success-icon">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <h3>Interest Registered Successfully!</h3>
+          <p>Your Registration Reference ID is:</p>
+          <div class="ref-badge">{{ submittedApp()?.id }}</div>
+          <p class="success-note">
+            Our counselor at Khandelwal Computers will contact you on <strong>{{ submittedApp()?.phone }}</strong> when the official admission counseling begins.
+          </p>
+          <app-button
+            label="Close"
+            variant="primary"
+            (clicked)="closeModal()"
+          ></app-button>
+        </div>
+      } @else {
+        <form [formGroup]="interestForm" (ngSubmit)="onSubmitInterest()" class="modal-form">
+          <app-input-field
+            label="Full Name"
+            prefixIcon="person"
+            formControlName="fullName"
+            [required]="true"
+            placeholder="Enter your full name"
+          ></app-input-field>
+
+          <app-input-field
+            label="Email Address"
+            type="email"
+            prefixIcon="mail"
+            formControlName="email"
+            [required]="true"
+            placeholder="Enter your email"
+          ></app-input-field>
+
+          <app-input-field
+            label="Mobile Phone Number"
+            type="tel"
+            prefixIcon="phone"
+            formControlName="phone"
+            [required]="true"
+            placeholder="10 digit mobile number"
+          ></app-input-field>
+
+          <div class="form-row-2">
+            <app-input-field
+              label="Category"
+              type="select"
+              prefixIcon="groups"
+              formControlName="category"
+              [options]="categoryOptions"
+            ></app-input-field>
+
+            <app-input-field
+              label="Educational Qualification"
+              type="select"
+              prefixIcon="school"
+              formControlName="qualification"
+              [options]="qualificationOptions"
+            ></app-input-field>
+          </div>
+
+          <app-input-field
+            label="Current Address"
+            type="textarea"
+            prefixIcon="home"
+            formControlName="address"
+            [rows]="2"
+            placeholder="Enter street/locality"
+          ></app-input-field>
+
+          <app-input-field
+            label="Pincode"
+            prefixIcon="pin"
+            formControlName="pincode"
+            [required]="true"
+            placeholder="6-digit Pincode"
+          ></app-input-field>
+
+          <div class="modal-actions">
+            <app-button
+              label="Cancel"
+              variant="ghost"
+              (clicked)="closeModal()"
+            ></app-button>
+            <app-button
+              label="Submit Registration"
+              prefixIcon="send"
+              btnType="submit"
+              variant="primary"
+              [loading]="isSubmitting()"
+            ></app-button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}
+
+<app-footer></app-footer>

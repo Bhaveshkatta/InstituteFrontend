@@ -1,6 +1,6 @@
 import { Component, output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [
     CommonModule, 
+    RouterLink,
     MatToolbarModule, 
     MatButtonModule, 
     MatIconModule,
@@ -31,6 +32,7 @@ export class NavbarComponent {
   navLinks = [
     { label: 'Home', path: '#home' },
     { label: 'Courses', path: '#courses' },
+    { label: 'Govt Schemes', route: '/government-courses' },
     { label: 'Why Choose Us', path: '#about' },
     { label: 'Process', path: '#process' },
     { label: 'Gallery', path: '#gallery' },

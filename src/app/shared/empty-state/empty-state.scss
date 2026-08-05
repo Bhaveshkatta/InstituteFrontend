@@ -1,0 +1,54 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+
+.empty-state-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 20px;
+  border-radius: vars.$radius-lg;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  width: 100%;
+  box-sizing: border-box;
+
+  .empty-icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: vars.$primary;
+    }
+  }
+
+  .empty-title {
+    margin: 0 0 6px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: vars.$text-main;
+  }
+
+  .empty-description {
+    margin: 0 0 16px 0;
+    font-size: 0.88rem;
+    color: vars.$text-muted;
+    max-width: 360px;
+    line-height: 1.5;
+  }
+
+  .empty-action {
+    margin-top: 4px;
+  }
+}

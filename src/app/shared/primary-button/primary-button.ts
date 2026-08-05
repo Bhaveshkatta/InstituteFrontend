@@ -1,11 +1,10 @@
 import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { ButtonComponent } from '../button/button';
 
 @Component({
   selector: 'app-primary-button',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule],
+  imports: [ButtonComponent],
   templateUrl: './primary-button.html',
   styleUrl: './primary-button.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

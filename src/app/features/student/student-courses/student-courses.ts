@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DataService } from '../../../services/data.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
 
 interface CourseDisplay {
   id: string | number;
@@ -27,7 +28,7 @@ interface CourseDisplay {
 
 @Component({
   selector: 'app-student-courses',
-  imports: [CommonModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, RouterLink, FormsModule, StudentSidebarComponent],
   templateUrl: './student-courses.html',
   styleUrl: './student-courses.scss',
 })

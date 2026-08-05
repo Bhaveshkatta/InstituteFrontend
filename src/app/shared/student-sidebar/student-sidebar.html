@@ -1,0 +1,38 @@
+<aside class="sidebar" [class.open]="isOpen">
+  <!-- LOGO -->
+  <div class="sidebar-logo">
+    <img src="images/logo.png" alt="KC Logo" class="nav-logo-img" />
+    <span class="nav-brand">Khandelwal<br><span class="accent">Computers</span></span>
+  </div>
+
+  <!-- NAV LINKS -->
+  <nav class="sidebar-nav">
+    @for (link of navLinks; track link.route) {
+      @if (link.route !== '#') {
+        <a
+          class="nav-item"
+          [class.active]="isActive(link.route)"
+          [routerLink]="link.route"
+          (click)="onNavClick()"
+        >
+          <mat-icon>{{ link.icon }}</mat-icon>
+          <span>{{ link.label }}</span>
+        </a>
+      } @else {
+        <button class="nav-item nav-item-disabled" disabled>
+          <mat-icon>{{ link.icon }}</mat-icon>
+          <span>{{ link.label }}</span>
+          <span class="coming-soon">Soon</span>
+        </button>
+      }
+    }
+  </nav>
+
+  <!-- LOGOUT -->
+  <div class="sidebar-bottom">
+    <button class="logout-btn" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>

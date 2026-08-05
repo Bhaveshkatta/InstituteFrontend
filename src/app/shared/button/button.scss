@@ -1,0 +1,114 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+
+.custom-app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: vars.$radius-md;
+  font-family: vars.$font-main;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: vars.$transition-normal;
+  border: 1px solid transparent;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  &.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    height: 34px;
+  }
+
+  &.btn-md {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    height: 42px;
+  }
+
+  &.btn-lg {
+    padding: 14px 28px;
+    font-size: 1rem;
+    height: 50px;
+  }
+
+  // VARIANTS
+  &.btn-primary {
+    background: linear-gradient(135deg, vars.$primary 0%, vars.$primary-dark 100%);
+    color: vars.$bg-darker;
+    box-shadow: 0 4px 15px vars.$primary-glow;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px vars.$primary-glow;
+    }
+  }
+
+  &.btn-secondary {
+    background: linear-gradient(135deg, vars.$secondary 0%, vars.$secondary-dark 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 15px vars.$secondary-glow;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px vars.$secondary-glow;
+    }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border-color: vars.$border-primary;
+    color: vars.$primary;
+
+    &:hover:not(:disabled) {
+      background: rgba(0, 229, 255, 0.08);
+      border-color: vars.$primary;
+    }
+  }
+
+  &.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+  }
+
+  &.btn-ghost {
+    background: transparent;
+    color: vars.$text-muted;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.05);
+      color: vars.$text-main;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .btn-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner {
+    circle {
+      stroke: currentColor !important;
+    }
+  }
+}

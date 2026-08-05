@@ -1,0 +1,31 @@
+<button
+  [type]="btnType"
+  class="custom-app-btn"
+  [class.btn-primary]="variant === 'primary'"
+  [class.btn-secondary]="variant === 'secondary'"
+  [class.btn-outline]="variant === 'outline'"
+  [class.btn-danger]="variant === 'danger'"
+  [class.btn-ghost]="variant === 'ghost'"
+  [class.btn-sm]="size === 'sm'"
+  [class.btn-md]="size === 'md'"
+  [class.btn-lg]="size === 'lg'"
+  [class.full-width]="fullWidth"
+  [class.is-loading]="loading"
+  [disabled]="disabled || loading"
+  (click)="onClick($event)"
+>
+  @if (loading) {
+    <mat-spinner diameter="18" class="btn-spinner"></mat-spinner>
+  } @else {
+    @if (prefixIcon || icon) {
+      <mat-icon class="btn-icon left-icon">{{ prefixIcon || icon }}</mat-icon>
+    }
+    @if (label) {
+      <span class="btn-label">{{ label }}</span>
+    }
+    <ng-content></ng-content>
+    @if (suffixIcon) {
+      <mat-icon class="btn-icon right-icon">{{ suffixIcon }}</mat-icon>
+    }
+  }
+</button>
