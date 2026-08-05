@@ -229,6 +229,7 @@ $sidebar-w:      260px;
 }
 
 .back-btn {
+  width: auto;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -791,4 +792,8 @@ $sidebar-w:      260px;
   .courses-grid { grid-template-columns: 1fr; }
 
   .page-header h1 { font-size: 20px; }
+
+  .back-btn span{
+    display: none;
+  }
 }

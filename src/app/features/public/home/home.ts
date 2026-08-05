@@ -4,21 +4,21 @@ import { Router } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { DataService } from '../../services/data.service';
-import { AuthService } from '../../services/auth.service';
+import { DataService } from '../../../services/data.service';
+import { AuthService } from '../../../services/auth.service';
 
 // Shared Components
-import { NavbarComponent } from '../../shared/navbar/navbar';
-import { HeroBannerComponent } from '../../shared/hero-banner/hero-banner';
-import { StatisticCardComponent } from '../../shared/statistic-card/statistic-card';
-import { CourseCardComponent } from '../../shared/course-card/course-card';
-import { FeatureCardComponent } from '../../shared/feature-card/feature-card';
-import { TestimonialCardComponent } from '../../shared/testimonial-card/testimonial-card';
-import { GalleryCardComponent } from '../../shared/gallery-card/gallery-card';
-import { FAQItemComponent } from '../../shared/faq-item/faq-item';
-import { ContactCardComponent } from '../../shared/contact-card/contact-card';
-import { FooterComponent } from '../../shared/footer/footer';
-import { SectionTitleComponent } from '../../shared/section-title/section-title';
+import { NavbarComponent } from '../../../shared/navbar/navbar';
+import { HeroBannerComponent } from '../../../shared/hero-banner/hero-banner';
+import { StatisticCardComponent } from '../../../shared/statistic-card/statistic-card';
+import { CourseCardComponent } from '../../../shared/course-card/course-card';
+import { FeatureCardComponent } from '../../../shared/feature-card/feature-card';
+import { TestimonialCardComponent } from '../../../shared/testimonial-card/testimonial-card';
+import { GalleryCardComponent } from '../../../shared/gallery-card/gallery-card';
+import { FAQItemComponent } from '../../../shared/faq-item/faq-item';
+import { ContactCardComponent } from '../../../shared/contact-card/contact-card';
+import { FooterComponent } from '../../../shared/footer/footer';
+import { SectionTitleComponent } from '../../../shared/section-title/section-title';
 
 @Component({
   selector: 'app-home',
