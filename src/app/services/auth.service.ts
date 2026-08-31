@@ -1,10 +1,22 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private readonly loggedIn = signal<boolean>(this.checkLoginStatus());
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment.apiUrl;
+  private readonly controller = 'User';
+
+  signup(data: FormData) {
+    return this.http.post(
+      `${this.baseUrl}/${this.controller}/signup`,
+      data
+    );
+  }
 
   isLoggedIn() {
     return this.loggedIn.asReadonly();
