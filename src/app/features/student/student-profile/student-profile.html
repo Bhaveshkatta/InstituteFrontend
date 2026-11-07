@@ -1,42 +1,5 @@
-<div class="dashboard-shell">
-
-  <!-- ── SIDEBAR ────────────────────────────────────── -->
-  <app-student-sidebar
-    [isOpen]="sidebarOpen()"
-    (closed)="sidebarOpen.set(false)"
-  ></app-student-sidebar>
-
-  <!-- ── MOBILE OVERLAY ──────────────────────────────── -->
-  @if (sidebarOpen()) {
-    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
-  }
-
-  <!-- ── MAIN AREA ──────────────────────────────────── -->
-  <div class="main-area">
-    <header class="top-bar">
-      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
-      </button>
-      <div class="top-bar-title">
-        <span>Candidate Profile &amp; Enrollment Details</span>
-      </div>
-      <div class="top-bar-right">
-        <a routerLink="/student/dashboard" class="back-link">
-          <mat-icon>arrow_back</mat-icon>
-          <span>Dashboard</span>
-        </a>
-        <div class="avatar-chip">
-          <div class="avatar-circle">{{ avatarInitials() }}</div>
-          <div class="avatar-info">
-            <span class="avatar-name">{{ profileService.candidateProfile().fullName }}</span>
-            <span class="avatar-id">{{ profileService.candidateProfile().studentId }}</span>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main class="page-content">
-      @if (saveSuccess()) {
+<app-student-shell title="Candidate Profile &amp; Enrollment Details" [showBackBtn]="true" backLink="/student/dashboard" backLabel="Dashboard">
+  @if (saveSuccess()) {
         <div class="success-banner">
           <mat-icon>check_circle</mat-icon>
           <span>Candidate details saved successfully!</span>
@@ -489,7 +452,4 @@
         }
 
       </div>
-    </main>
-  </div>
-
-</div>
+</app-student-shell>

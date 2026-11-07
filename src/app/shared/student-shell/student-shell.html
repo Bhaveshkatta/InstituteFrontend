@@ -1,0 +1,74 @@
+<div class="dashboard-shell">
+  <!-- SIDEBAR -->
+  <app-student-sidebar
+    [isOpen]="sidebarOpen()"
+    (closed)="sidebarOpen.set(false)"
+  ></app-student-sidebar>
+
+  <!-- MOBILE OVERLAY -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
+  }
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+    <!-- TOP NAV BAR -->
+    <header class="top-bar">
+      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button type="button" aria-label="Toggle navigation">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <div class="top-bar-title">
+        <span>{{ title() }}</span>
+      </div>
+
+      <div class="top-bar-right">
+        <!-- Projected page-specific top bar actions -->
+        <ng-content select="[topBarActions]"></ng-content>
+
+        @if (showThemeToggle()) {
+          <button
+            class="theme-toggle-btn"
+            (click)="themeService.toggleTheme()"
+            [title]="'Switch to ' + (themeService.isDark() ? 'Light' : 'Dark') + ' Mode'"
+            mat-icon-button
+            type="button"
+          >
+            <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          </button>
+        }
+
+        @if (showNotifications()) {
+          <button class="icon-btn" mat-icon-button aria-label="Notifications" type="button">
+            <mat-icon>notifications</mat-icon>
+            <span class="notif-dot"></span>
+          </button>
+        }
+
+        @if (showBackBtn()) {
+          <a [routerLink]="backLink()" class="back-btn">
+            <mat-icon>arrow_back</mat-icon>
+            <span>{{ backLabel() }}</span>
+          </a>
+        }
+
+        @if (showAvatar()) {
+          <a routerLink="/student/profile" class="avatar-chip-link">
+            <div class="avatar-chip">
+              <div class="avatar-circle">{{ avatarInitials() }}</div>
+              <div class="avatar-info">
+                <span class="avatar-name">{{ studentName() }}</span>
+                <span class="avatar-id">{{ studentId() }}</span>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    </header>
+
+    <!-- MAIN PAGE CONTENT -->
+    <main class="page-content">
+      <ng-content></ng-content>
+    </main>
+  </div>
+</div>

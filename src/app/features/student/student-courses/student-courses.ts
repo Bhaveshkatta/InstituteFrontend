@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +8,7 @@ import { DataService } from '../../../services/data.service';
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from '../../../services/profile.service';
 import { ThemeService } from '../../../services/theme.service';
-import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
+import { StudentShellComponent } from '../../../shared/student-shell/student-shell';
 
 interface CourseDisplay {
   id: string | number;
@@ -30,7 +30,7 @@ interface CourseDisplay {
 @Component({
   selector: 'app-student-courses',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, RouterLink, FormsModule, StudentSidebarComponent],
+  imports: [CommonModule, MatIconModule, MatButtonModule, FormsModule, StudentShellComponent],
   templateUrl: './student-courses.html',
   styleUrl: './student-courses.scss',
 })
@@ -43,7 +43,6 @@ export class StudentCourses {
 
   searchQuery = signal('');
   selectedCategory = signal('All');
-  sidebarOpen = signal(false);
   notificationFeedback = signal<string | null>(null);
 
   private readonly iconMap: Record<string, { icon: string; color: string }> = {
@@ -122,10 +121,6 @@ export class StudentCourses {
     setTimeout(() => {
       this.notificationFeedback.set(null);
     }, 4000);
-  }
-
-  toggleSidebar() {
-    this.sidebarOpen.update(v => !v);
   }
 
   logout() {

@@ -1,39 +1,5 @@
-<div class="dashboard-shell">
-
-  <!-- ── SIDEBAR ────────────────────────────────────── -->
-  <app-student-sidebar
-    [isOpen]="sidebarOpen()"
-    (closed)="sidebarOpen.set(false)"
-  ></app-student-sidebar>
-
-  <!-- ── MOBILE OVERLAY ──────────────────────────────── -->
-  @if (sidebarOpen()) {
-    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
-  }
-
-  <!-- ── MAIN AREA ──────────────────────────────────── -->
-  <div class="main-area">
-    <header class="top-bar">
-      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
-      </button>
-      <div class="top-bar-title">
-        <span>Government Free Course Module</span>
-      </div>
-      <div class="top-bar-right">
-        <div class="avatar-chip">
-          <div class="avatar-circle">{{ avatarInitials() }}</div>
-          <div class="avatar-info">
-            <span class="avatar-name">{{ studentProfile().fullName }}</span>
-            <span class="avatar-id">{{ studentProfile().studentId }}</span>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main class="page-content">
-
-      <!-- STEP 1: SCHEME LIST -->
+<app-student-shell title="Government Free Course Module">
+  <!-- STEP 1: SCHEME LIST -->
       @if (currentStep() === 'list') {
         <div class="section-banner card-entrance">
           <div class="banner-text">
@@ -321,8 +287,4 @@
           </app-card-wrapper>
         </div>
       }
-
-    </main>
-  </div>
-
-</div>
+</app-student-shell>

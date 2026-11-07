@@ -9,7 +9,7 @@ import { ThemeService } from '../../../services/theme.service';
 import { ProfileService } from '../../../services/profile.service';
 import { EmptyStateComponent } from '../../../shared/empty-state/empty-state';
 import { ButtonComponent } from '../../../shared/button/button';
-import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
+import { StudentShellComponent } from '../../../shared/student-shell/student-shell';
 
 export interface CourseDetailItem {
   id: string;
@@ -67,7 +67,7 @@ export interface Announcement {
     RouterLink,
     EmptyStateComponent,
     ButtonComponent,
-    StudentSidebarComponent
+    StudentShellComponent
   ],
   templateUrl: './student-dashboard.html',
   styleUrl: './student-dashboard.scss',
@@ -78,16 +78,14 @@ export class StudentDashboard {
   protected readonly themeService = inject(ThemeService);
   protected readonly profileService = inject(ProfileService);
 
-  studentName = computed(() => this.profileService.candidateProfile().fullName);
-  studentId = computed(() => this.profileService.candidateProfile().studentId);
+  studentName = computed(() => this.profileService.candidateProfile().fullName || 'Rahul Gupta');
+  studentId = computed(() => this.profileService.candidateProfile().studentId || 'KC-2024-0412');
 
-  avatarInitials = computed(() =>
-    this.studentName()
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-  );
+  avatarInitials = computed(() => {
+    const parts = this.studentName().trim().split(' ');
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    return (this.studentName().slice(0, 2) || 'ST').toUpperCase();
+  });
 
   today = signal(
     new Date().toLocaleDateString('en-IN', {
@@ -107,7 +105,6 @@ export class StudentDashboard {
   ]);
 
   showEmptyState = signal(false);
-  sidebarOpen = signal(false);
 
   // Enrolled Courses with Start Date, Approx End Date, Batch Timing, Actions
   enrolledCourses = signal<CourseDetailItem[]>([
@@ -241,10 +238,6 @@ export class StudentDashboard {
   });
 
   // Action methods
-  toggleSidebar() {
-    this.sidebarOpen.update((v) => !v);
-  }
-
   toggleEmptyDemo() {
     this.showEmptyState.update((v) => !v);
   }

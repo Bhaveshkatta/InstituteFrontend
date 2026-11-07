@@ -1,48 +1,5 @@
-<div class="dashboard-shell">
-
-  <!-- ── SIDEBAR ──────────────────────────────────────── -->
-  <app-student-sidebar
-    [isOpen]="sidebarOpen()"
-    (closed)="sidebarOpen.set(false)"
-  ></app-student-sidebar>
-
-  <!-- ── MAIN AREA ─────────────────────────────────────── -->
-  <div class="main-area">
-
-    <!-- TOP NAV BAR -->
-    <header class="top-bar">
-      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
-      </button>
-      <div class="top-bar-title">
-        <span>Available Courses</span>
-      </div>
-      <div class="top-bar-right">
-        <!-- THEME TOGGLE BUTTON -->
-        <button
-          class="theme-toggle-btn"
-          (click)="themeService.toggleTheme()"
-          [title]="'Switch to ' + (themeService.isDark() ? 'Light' : 'Dark') + ' Mode'"
-          mat-icon-button
-        >
-          <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-        </button>
-
-        <button class="icon-btn" mat-icon-button aria-label="Notifications">
-          <mat-icon>notifications</mat-icon>
-          <span class="notif-dot"></span>
-        </button>
-        <a routerLink="/student/dashboard" class="back-btn">
-          <mat-icon>arrow_back</mat-icon>
-          <span>Dashboard</span>
-        </a>
-      </div>
-    </header>
-
-    <!-- PAGE CONTENT -->
-    <main class="page-content">
-
-      <!-- TOAST FEEDBACK -->
+<app-student-shell title="Available Courses" [showBackBtn]="true" backLink="/student/dashboard" backLabel="Dashboard" [showAvatar]="false">
+  <!-- TOAST FEEDBACK -->
       @if (notificationFeedback()) {
         <div class="toast-feedback">
           <mat-icon>info</mat-icon>
@@ -205,13 +162,4 @@
           </button>
         </div>
       }
-
-    </main>
-  </div>
-
-  <!-- Mobile sidebar overlay -->
-  @if (sidebarOpen()) {
-    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
-  }
-
-</div>
+</app-student-shell>

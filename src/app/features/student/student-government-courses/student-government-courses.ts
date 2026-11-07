@@ -10,7 +10,7 @@ import { CardWrapperComponent } from '../../../shared/card-wrapper/card-wrapper'
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from '../../../services/profile.service';
 import { ThemeService } from '../../../services/theme.service';
-import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
+import { StudentShellComponent } from '../../../shared/student-shell/student-shell';
 
 @Component({
   selector: 'app-student-government-courses',
@@ -20,8 +20,7 @@ import { StudentSidebarComponent } from '../../../shared/student-sidebar/student
     InputFieldComponent,
     ButtonComponent,
     CardWrapperComponent,
-    RouterLink,
-    StudentSidebarComponent
+    StudentShellComponent
   ],
   templateUrl: './student-government-courses.html',
   styleUrl: './student-government-courses.scss'
@@ -40,18 +39,9 @@ export class StudentGovernmentCourses implements OnInit {
   currentStep = signal<'list' | 'details' | 'apply' | 'success'>('list');
   submittedApp = signal<GovernmentSchemeApplication | null>(null);
   isSubmitting = signal<boolean>(false);
-  sidebarOpen = signal<boolean>(false);
   notificationFeedback = signal<string | null>(null);
 
   studentProfile = computed(() => this.profileService.candidateProfile());
-
-  avatarInitials = computed(() =>
-    this.studentProfile().fullName
-      .split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase()
-  );
 
   categoryOptions = [
     { label: 'General', value: 'General' },
@@ -92,10 +82,6 @@ export class StudentGovernmentCourses implements OnInit {
       address: prof.address,
       pincode: prof.pincode
     });
-  }
-
-  toggleSidebar(): void {
-    this.sidebarOpen.update(v => !v);
   }
 
   viewSchemeDetails(scheme: GovernmentScheme): void {

@@ -226,6 +226,82 @@ $sidebar-w:      260px;
   }
 }
 
+// ── Theme Switcher Button ──────────────────────────────────────
+.theme-toggle-btn {
+  color: $cyan !important;
+  background: rgba(0, 229, 255, 0.08) !important;
+  border: 1px solid rgba(0, 229, 255, 0.2) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(0, 229, 255, 0.2) !important;
+    transform: rotate(15deg);
+  }
+}
+
+// ── Back Button ────────────────────────────────────────────────
+.back-btn {
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  text-decoration: none;
+  color: $text-secondary;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid $border-subtle;
+  transition: all 0.2s ease;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover {
+    color: $cyan;
+    border-color: $border-glow;
+    background: rgba(0, 229, 255, 0.05);
+  }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    span { display: none; }
+  }
+}
+
+// ── Toast Feedback ─────────────────────────────────────────────
+.toast-feedback {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: rgba(10, 14, 32, 0.95);
+  border: 1px solid $cyan;
+  color: $cyan;
+  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.25);
+  font-size: 14px;
+  font-weight: 500;
+  animation: slideUpToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  @media (max-width: 768px) {
+    left: 12px;
+    right: 12px;
+    bottom: 16px;
+    font-size: 13px;
+  }
+}
+
+@keyframes slideUpToast {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 // ── LIGHT THEME GLOBAL OVERRIDES ──────────────────────────
 body.light-theme {
   background-color: #f1f5f9;

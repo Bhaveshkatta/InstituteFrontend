@@ -1,67 +1,11 @@
-<div class="dashboard-shell">
+<app-student-shell title="Student Dashboard">
+  <!-- Demo Empty State button in top bar -->
+  <button topBarActions class="empty-toggle-btn" (click)="toggleEmptyDemo()" title="Toggle Empty States Demo" type="button">
+    <mat-icon>{{ showEmptyState() ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+    <span>Demo Empty State</span>
+  </button>
 
-  <!-- ── SIDEBAR ──────────────────────────────────────── -->
-  <app-student-sidebar
-    [isOpen]="sidebarOpen()"
-    (closed)="sidebarOpen.set(false)"
-  ></app-student-sidebar>
-
-  <!-- ── MOBILE OVERLAY ───────────────────────────────── -->
-  @if (sidebarOpen()) {
-    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
-  }
-
-  <!-- ── MAIN AREA ─────────────────────────────────────── -->
-  <div class="main-area">
-
-    <!-- TOP NAV BAR -->
-    <header class="top-bar">
-      <button class="menu-toggle" (click)="toggleSidebar()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
-      </button>
-
-      <div class="top-bar-title">
-        <span>Student Dashboard</span>
-      </div>
-
-      <div class="top-bar-right">
-
-        <!-- THEME SWITCHER BUTTON -->
-        <button
-          class="theme-toggle-btn"
-          (click)="themeService.toggleTheme()"
-          [title]="'Switch to ' + (themeService.isDark() ? 'Light' : 'Dark') + ' Mode'"
-          mat-icon-button
-        >
-          <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-        </button>
-
-        <button class="empty-toggle-btn" (click)="toggleEmptyDemo()" title="Toggle Empty States Demo">
-          <mat-icon>{{ showEmptyState() ? 'toggle_on' : 'toggle_off' }}</mat-icon>
-          <span>Demo Empty State</span>
-        </button>
-
-        <button class="icon-btn" mat-icon-button aria-label="Notifications">
-          <mat-icon>notifications</mat-icon>
-          <span class="notif-dot"></span>
-        </button>
-
-        <a routerLink="/student/profile" class="avatar-chip-link">
-          <div class="avatar-chip">
-            <div class="avatar-circle">{{ avatarInitials() }}</div>
-            <div class="avatar-info">
-              <span class="avatar-name">{{ studentName() }}</span>
-              <span class="avatar-id">{{ studentId() }}</span>
-            </div>
-          </div>
-        </a>
-      </div>
-    </header>
-
-    <!-- PAGE CONTENT -->
-    <main class="page-content">
-
-      <!-- ACTION FEEDBACK TOAST -->
+  <!-- ACTION FEEDBACK TOAST -->
       @if (actionFeedback()) {
         <div class="toast-feedback">
           <mat-icon>info</mat-icon>
@@ -397,9 +341,6 @@
         </div>
       </section>
 
-    </main>
-  </div>
-
   <!-- ═══════════════════════════════════════════════════ MODALS ═══════════════════════════════════════════════════ -->
 
   <!-- 1. ANNOUNCEMENT DETAIL MODAL -->
@@ -616,5 +557,4 @@
       </div>
     </div>
   }
-
-</div>
+</app-student-shell>

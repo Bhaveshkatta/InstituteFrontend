@@ -1,13 +1,13 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SHARED_IMPORTS } from '../../../shared/shared.imports';
 import { InputFieldComponent, SelectOption } from '../../../shared/input-field/input-field';
 import { ButtonComponent } from '../../../shared/button/button';
 import { CardWrapperComponent } from '../../../shared/card-wrapper/card-wrapper';
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService, CandidateProfile } from '../../../services/profile.service';
-import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
+import { StudentShellComponent } from '../../../shared/student-shell/student-shell';
 
 @Component({
   selector: 'app-student-profile',
@@ -17,8 +17,7 @@ import { StudentSidebarComponent } from '../../../shared/student-sidebar/student
     InputFieldComponent,
     ButtonComponent,
     CardWrapperComponent,
-    RouterLink,
-    StudentSidebarComponent
+    StudentShellComponent
   ],
   templateUrl: './student-profile.html',
   styleUrl: './student-profile.scss'
@@ -30,7 +29,6 @@ export class StudentProfile implements OnInit {
 
   isLoading = signal<boolean>(false);
   saveSuccess = signal<boolean>(false);
-  sidebarOpen = signal<boolean>(false);
   activeTab = signal<'basic' | 'address' | 'qualifications' | 'security'>('basic');
 
   avatarInitials = computed(() =>
@@ -178,10 +176,6 @@ export class StudentProfile implements OnInit {
 
   setTab(tab: 'basic' | 'address' | 'qualifications' | 'security') {
     this.activeTab.set(tab);
-  }
-
-  toggleSidebar() {
-    this.sidebarOpen.update(v => !v);
   }
 
   onSaveBasicDetails(): void {
