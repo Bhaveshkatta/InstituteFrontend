@@ -124,31 +124,116 @@ html.light-theme, body.light-theme {
     p { color: #334155 !important; }
   }
 
-  /* Profile Nav Tabs Light Theme */
+  /* ── Profile Nav Tabs — Light Theme ──────────────────────── */
   .profile-nav-tabs {
-    border-bottom-color: #cbd5e1 !important;
+    background: #e8edf5 !important;
+    border-bottom: none !important;
+    border-radius: 14px !important;
+    padding: 5px !important;
+    gap: 4px !important;
   }
 
   .tab-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 40px !important;
+    padding: 8px 18px !important;
+    border-radius: 10px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
     color: #475569 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.18s ease !important;
 
-    mat-icon { color: #64748b !important; }
+    mat-icon {
+      color: #64748b !important;
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
 
     &:hover {
-      color: #0284c7 !important;
-      background: #e0f2fe !important;
+      background: #d1dced !important;
+      color: #1e3a5f !important;
+      border-color: transparent !important;
 
-      mat-icon { color: #0284c7 !important; }
+      mat-icon { color: #1e3a5f !important; }
     }
 
     &.active {
-      background: #e0f2fe !important;
-      border-color: #7dd3fc !important;
-      color: #0284c7 !important;
-      font-weight: 600 !important;
+      background: #ffffff !important;
+      border-color: #bfcfdf !important;
+      color: #0369a1 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1) !important;
 
-      mat-icon { color: #0284c7 !important; }
+      mat-icon { color: #0369a1 !important; }
     }
+  }
+
+  /* ── Courses Category Filter Tabs — Light Theme ───────────── */
+  .category-filters {
+    background: #e8edf5 !important;
+    border-radius: 14px !important;
+    padding: 5px !important;
+    gap: 4px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+
+  .cat-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 36px !important;
+    padding: 6px 16px !important;
+    border-radius: 9px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: #475569 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: all 0.18s ease !important;
+    cursor: pointer !important;
+
+    &:hover {
+      background: #d1dced !important;
+      color: #1e3a5f !important;
+      border-color: transparent !important;
+    }
+
+    &.active {
+      background: #ffffff !important;
+      border-color: #bfcfdf !important;
+      color: #0369a1 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+
+  /* ── Courses Search Input — Light Theme ───────────────────── */
+  .search-input {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+
+    &::placeholder { color: #94a3b8 !important; }
+
+    &:focus {
+      border-color: #7dd3fc !important;
+      box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.15) !important;
+    }
+  }
+
+  .search-icon { color: #94a3b8 !important; }
+
+  /* ── Results bar — Light Theme ────────────────────────────── */
+  .results-count {
+    color: #475569 !important;
+    strong { color: #0f172a !important; }
+    em { color: #0284c7 !important; }
   }
 
   /* Modals Light Theme */
@@ -194,10 +279,136 @@ html.light-theme, body.light-theme {
   }
 
 
+  /* ── Card Wrapper (shared component) — Light Theme ──────── */
+  .card-wrapper-container {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+    color: #0f172a !important;
+
+    .card-title { color: #0f172a !important; }
+    .card-subtitle { color: #475569 !important; }
+    .header-icon { color: #0284c7 !important; }
+    .header-action-btn { color: #0284c7 !important; &:hover { background: #e0f2fe !important; } }
+  }
+
+  /* ── Profile Tab Body & Form Sections — Light Theme ─────── */
+  .tab-body {
+    color: #0f172a !important;
+
+    // Section card headers inside tab body
+    .card-header h2,
+    .card-header .card-title { color: #0f172a !important; }
+
+    // Form labels and text
+    label { color: #374151 !important; }
+  }
+
+  // Profile completion bar track
+  .comp-track {
+    background: #e2e8f0 !important;
+  }
+
+  // Profile header user meta text
+  .comp-label { color: #475569 !important; }
+  .comp-percent { color: #0284c7 !important; }
+
+  /* ── Government Courses Cards — Light Theme ──────────────── */
+  .scheme-item-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    color: #0f172a !important;
+
+    .scheme-title { color: #0f172a !important; }
+    .scheme-desc  { color: #475569 !important; }
+    .scheme-dept  { color: #0284c7 !important; }
+
+    .dates-strip {
+      background: #f1f5f9 !important;
+      border: 1px solid #e2e8f0 !important;
+
+      .lbl { color: #64748b !important; }
+      .val { color: #0f172a !important; }
+    }
+
+    .seats-left { color: #059669 !important; }
+  }
+
+  .section-banner {
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%) !important;
+    border-color: #bae6fd !important;
+    color: #0f172a !important;
+
+    h1 { color: #0f172a !important; }
+    p  { color: #475569 !important; }
+  }
+
+  // Govt courses details view inner boxes
+  .info-box {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+
+    h3 { color: #0f172a !important; }
+    ul, li { color: #475569 !important; }
+  }
+
+  .dates-box {
+    background: #e0f2fe !important;
+    border-color: #7dd3fc !important;
+
+    .lbl { color: #475569 !important; }
+    .val { color: #0369a1 !important; }
+  }
+
+  .auto-fill-notice {
+    background: #e0f2fe !important;
+    border-color: #7dd3fc !important;
+    color: #0369a1 !important;
+  }
+
+  // My Applications rows
+  .app-row {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+
+    .app-title { color: #0f172a !important; }
+    .app-date  { color: #64748b !important; }
+  }
+
+  // Success screen summary box
+  .summary-box {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+
+    .sum-item {
+      border-bottom-color: #e2e8f0 !important;
+      .lbl { color: #64748b !important; }
+      .val { color: #0f172a !important; }
+    }
+  }
+
+  .success-card-content {
+    .sub-text { color: #475569 !important; }
+    .app-id-box {
+      background: #e0f2fe !important;
+      border-color: #0284c7 !important;
+      .label { color: #475569 !important; }
+    }
+    .next-steps { background: #fffbeb !important; color: #92400e !important; }
+  }
+
+  // Badge pill in govt courses
+  .badge-pill {
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+  }
+
   .card-wrapper-container {
     @media (max-width: 768px) {
-      &.is-glass{
-        background: #ffffff;
+      &.is-glass {
+        background: #ffffff !important;
       }
     }
   }
