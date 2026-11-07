@@ -1,17 +1,12 @@
 <div class="dashboard-shell">
 
-  <!-- ═══════════════════════════════════════════════════ SIDEBAR -->
+  <!-- ── SIDEBAR ──────────────────────────────────────── -->
   <app-student-sidebar
     [isOpen]="sidebarOpen()"
     (closed)="sidebarOpen.set(false)"
   ></app-student-sidebar>
 
-  <!-- ═══════════════════════════════════════════════════ MOBILE OVERLAY -->
-  @if (sidebarOpen()) {
-    <div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
-  }
-
-  <!-- ═══════════════════════════════════════════════════ MAIN AREA -->
+  <!-- ── MAIN AREA ─────────────────────────────────────── -->
   <div class="main-area">
 
     <!-- TOP NAV BAR -->
@@ -23,11 +18,21 @@
         <span>Available Courses</span>
       </div>
       <div class="top-bar-right">
+        <!-- THEME TOGGLE BUTTON -->
+        <button
+          class="theme-toggle-btn"
+          (click)="themeService.toggleTheme()"
+          [title]="'Switch to ' + (themeService.isDark() ? 'Light' : 'Dark') + ' Mode'"
+          mat-icon-button
+        >
+          <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+
         <button class="icon-btn" mat-icon-button aria-label="Notifications">
           <mat-icon>notifications</mat-icon>
           <span class="notif-dot"></span>
         </button>
-        <a routerLink="/student/dashboard" class="back-btn" mat-icon-button>
+        <a routerLink="/student/dashboard" class="back-btn">
           <mat-icon>arrow_back</mat-icon>
           <span>Dashboard</span>
         </a>
@@ -36,6 +41,14 @@
 
     <!-- PAGE CONTENT -->
     <main class="page-content">
+
+      <!-- TOAST FEEDBACK -->
+      @if (notificationFeedback()) {
+        <div class="toast-feedback">
+          <mat-icon>info</mat-icon>
+          <span>{{ notificationFeedback() }}</span>
+        </div>
+      }
 
       <!-- PAGE HEADER -->
       <section class="page-header">
@@ -164,12 +177,12 @@
                   </div>
 
                   @if (course.enrolled) {
-                    <button class="action-btn enrolled-btn">
+                    <button class="action-btn enrolled-btn" (click)="router.navigate(['/student/dashboard'])">
                       <mat-icon>play_circle</mat-icon>
                       Continue Learning
                     </button>
                   } @else {
-                    <button class="action-btn enroll-btn" [style.--ic]="course.iconColor">
+                    <button class="action-btn enroll-btn" [style.--ic]="course.iconColor" (click)="enrollCourse(course)">
                       <mat-icon>add_circle_outline</mat-icon>
                       Enroll Now
                     </button>
@@ -195,5 +208,10 @@
 
     </main>
   </div>
+
+  <!-- Mobile sidebar overlay -->
+  @if (sidebarOpen()) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
 
 </div>

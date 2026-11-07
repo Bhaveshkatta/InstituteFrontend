@@ -1,14 +1,15 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { SHARED_IMPORTS } from '../../../shared/shared.imports';
 import { GovernmentCourseService } from '../../../services/government-course.service';
 import { GovernmentScheme, GovernmentSchemeApplication } from '../../../models/government-scheme.model';
 import { InputFieldComponent } from '../../../shared/input-field/input-field';
 import { ButtonComponent } from '../../../shared/button/button';
 import { CardWrapperComponent } from '../../../shared/card-wrapper/card-wrapper';
-import { EmptyStateComponent } from '../../../shared/empty-state/empty-state';
 import { AuthService } from '../../../services/auth.service';
+import { ProfileService } from '../../../services/profile.service';
+import { ThemeService } from '../../../services/theme.service';
 import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
 
 @Component({
@@ -28,6 +29,9 @@ import { StudentSidebarComponent } from '../../../shared/student-sidebar/student
 export class StudentGovernmentCourses implements OnInit {
   private readonly govtService = inject(GovernmentCourseService);
   private readonly authService = inject(AuthService);
+  private readonly profileService = inject(ProfileService);
+  protected readonly themeService = inject(ThemeService);
+  protected readonly router = inject(Router);
 
   schemes = this.govtService.getSchemes();
   myApplications = this.govtService.getUserApplications();
@@ -37,17 +41,9 @@ export class StudentGovernmentCourses implements OnInit {
   submittedApp = signal<GovernmentSchemeApplication | null>(null);
   isSubmitting = signal<boolean>(false);
   sidebarOpen = signal<boolean>(false);
+  notificationFeedback = signal<string | null>(null);
 
-  studentProfile = signal({
-    fullName: 'Rahul Gupta',
-    email: 'rahul.gupta@example.com',
-    phone: '9876543210',
-    studentId: 'KC-2024-0412',
-    category: 'OBC',
-    qualification: 'Graduate',
-    address: '124, Station Road, Near Central Bank, Jaipur',
-    pincode: '302001'
-  });
+  studentProfile = computed(() => this.profileService.candidateProfile());
 
   avatarInitials = computed(() =>
     this.studentProfile().fullName
@@ -85,14 +81,14 @@ export class StudentGovernmentCourses implements OnInit {
   });
 
   ngOnInit(): void {
-    const prof = this.studentProfile();
+    const prof = this.profileService.candidateProfile();
     this.appForm.patchValue({
       fullName: prof.fullName,
       email: prof.email,
       phone: prof.phone,
       studentId: prof.studentId,
       category: prof.category,
-      qualification: prof.qualification,
+      qualification: prof.graduation.stream || 'Graduate',
       address: prof.address,
       pincode: prof.pincode
     });
@@ -108,8 +104,23 @@ export class StudentGovernmentCourses implements OnInit {
   }
 
   startApplication(scheme: GovernmentScheme): void {
-    this.selectedScheme.set(scheme);
-    this.currentStep.set('apply');
+    this.profileService.checkProfileAndProceed(
+      this.router,
+      () => {
+        this.selectedScheme.set(scheme);
+        this.currentStep.set('apply');
+      },
+      (msg) => {
+        this.showToast(msg);
+      }
+    );
+  }
+
+  showToast(msg: string) {
+    this.notificationFeedback.set(msg);
+    setTimeout(() => {
+      this.notificationFeedback.set(null);
+    }, 4000);
   }
 
   backToList(): void {
@@ -138,7 +149,7 @@ export class StudentGovernmentCourses implements OnInit {
         fullName: val.fullName!,
         email: val.email!,
         phone: val.phone!,
-        studentId: val.studentId || this.studentProfile().studentId,
+        studentId: val.studentId || this.profileService.candidateProfile().studentId,
         category: val.category!,
         qualification: val.qualification!,
         address: val.address!,
@@ -152,5 +163,6 @@ export class StudentGovernmentCourses implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

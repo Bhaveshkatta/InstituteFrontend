@@ -3,8 +3,7 @@
    Shares the same dark cyberpunk design system as Dashboard
 ══════════════════════════════════════════════════════════════════ */
 
-// Shared shell layout (dashboard-shell, main-area, top-bar, avatar-chip)
-@use '../../../../styles/student-shell';
+@use '../../../../styles/student-shell' as shell;
 
 * { box-sizing: border-box; }
 
@@ -20,7 +19,42 @@ $purple:         #a855f7;
 $green:          #10b981;
 $amber:          #f59e0b;
 
-// Back button (courses-specific — navigates to dashboard)
+// Theme Toggle
+.theme-toggle-btn {
+  color: $cyan !important;
+  background: rgba(0, 229, 255, 0.08) !important;
+  border: 1px solid rgba(0, 229, 255, 0.2) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(0, 229, 255, 0.2) !important;
+    transform: rotate(15deg);
+  }
+}
+
+// Toast Feedback
+.toast-feedback {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: rgba(10, 14, 32, 0.95);
+  border: 1px solid $cyan;
+  color: $cyan;
+  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.25);
+  font-size: 14px;
+  font-weight: 500;
+  animation: slideUpToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+}
+
+// Back button
 .back-btn {
   width: auto;
   display: flex;
@@ -559,9 +593,9 @@ $amber:          #f59e0b;
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(0, 229, 255, 0.7); }
-  50%       { box-shadow: 0 0 16px rgba(0, 229, 255, 1); }
+@keyframes slideUpToast {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 // ── Responsive ────────────────────────────────────────────────

@@ -1,119 +1,344 @@
-// ── Shared shell layout (dashboard-shell, main-area, top-bar, avatar-chip)
-@use '../../../../styles/student-shell';
-@use '../../../../styles/variables' as vars;
-@use '../../../../styles/mixins' as mix;
+@use '../../../../styles/student-shell' as shell;
 
-// ── Page-specific styles ─────────────────────────────────────────
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: shell.$text-secondary;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid shell.$border-subtle;
+  transition: all 0.2s ease;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &:hover {
+    color: shell.$cyan;
+    border-color: shell.$border-glow;
+    background: rgba(0, 229, 255, 0.08);
+  }
+}
 
 .success-banner {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid #10b981;
-  color: #10b981;
   padding: 14px 20px;
-  border-radius: vars.$radius-md;
+  border-radius: 14px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: shell.$green;
+  font-size: 14px;
   font-weight: 600;
+  animation: slideDown 0.3s ease forwards;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
 }
 
-// ── Profile Header ────────────────────────────────────────────
 .profile-header-strip {
   display: flex;
-  align-items: center;
   gap: 24px;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.avatar-big {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, shell.$cyan, shell.$purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: #000;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.header-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.user-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: shell.$text-primary;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: shell.$amber;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &.complete {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: shell.$green;
+  }
+}
+
+.user-meta {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  color: shell.$text-secondary;
+  font-size: 13px;
   flex-wrap: wrap;
 
-  .avatar-big {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, vars.$primary 0%, vars.$secondary 100%);
-    color: vars.$bg-darker;
-    font-size: 1.8rem;
-    font-weight: 800;
-    display: flex;
+  span {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px vars.$primary-glow;
-    flex-shrink: 0;
-  }
+    gap: 4px;
 
-  .header-details {
-    flex: 1;
-    min-width: 0;
-
-    .user-name {
-      margin: 0 0 6px 0;
-      font-size: 1.6rem;
-      font-weight: 700;
-
-      @include mix.respond-to('sm') {
-        font-size: 1.3rem;
-      }
-    }
-
-    .user-meta {
-      margin: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      color: vars.$text-muted;
-      font-size: 0.88rem;
-
-      span {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-        mat-icon {
-          font-size: 16px;
-          width: 16px;
-          height: 16px;
-          color: vars.$primary;
-        }
-      }
-    }
+    mat-icon { font-size: 15px; width: 15px; height: 15px; color: shell.$cyan; }
   }
 }
 
-// ── Profile Grid (two-column: form left, security right) ─────────
-.profile-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
+.completion-box {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-  @include mix.respond-to('lg') {
-    grid-template-columns: 1fr;
+.completion-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.comp-label {
+  color: shell.$text-secondary;
+  font-weight: 500;
+}
+
+.comp-percent {
+  font-weight: 700;
+  color: shell.$cyan;
+}
+
+.comp-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.comp-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, shell.$amber, shell.$cyan);
+  transition: width 0.6s ease;
+
+  &.complete {
+    background: linear-gradient(90deg, shell.$cyan, shell.$green);
   }
 }
 
-// ── Personal Details Form ─────────────────────────────────────
+/* NAV TABS */
+.profile-nav-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid shell.$border-subtle;
+  padding-bottom: 4px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: shell.$text-secondary;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover {
+    color: shell.$text-primary;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  &.active {
+    background: rgba(0, 229, 255, 0.1);
+    border-color: rgba(0, 229, 255, 0.25);
+    color: shell.$cyan;
+    font-weight: 600;
+  }
+}
+
+.tab-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 
-  .full-width-col {
-    grid-column: 1 / -1;
-  }
-
-  .form-actions {
-    margin-top: 8px;
-  }
-
-  @include mix.respond-to('sm') {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
 
-// ── Security Form ─────────────────────────────────────────────
+.full-width-col {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.qualifications-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
+
 .security-form {
+  max-width: 480px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
 
-  .form-actions {
-    margin-top: 8px;
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  RESPONSIVE OVERRIDES — PROFILE PAGE
+// ══════════════════════════════════════════════════════════════
+
+// ── Tablet  (≤ 1024px) ────────────────────────────────────────
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
+
+// ── Mobile  (≤ 768px) ─────────────────────────────────────────
+@media (max-width: 768px) {
+  // Profile header – already has flex-direction: column at 768px
+
+  .user-name { font-size: 20px; }
+
+  // Avatar size
+  .avatar-big {
+    width: 68px;
+    height: 68px;
+    font-size: 22px;
+  }
+
+  // Nav tabs – scroll horizontally, shrink tab padding
+  .profile-nav-tabs {
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+
+  .tab-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+
+  // Form grid – single column
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .full-width-col { grid-column: 1; }
+
+  // Security form – full width on mobile
+  .security-form {
+    max-width: 100%;
+  }
+
+  // Form actions
+  .form-actions, .form-actions-bar {
+    justify-content: stretch;
+
+    button { width: 100%; justify-content: center; }
+  }
+
+  // Qualifications wrap
+  .qualifications-wrap { gap: 16px; }
+}
+
+// ── Small Mobile  (≤ 480px) ───────────────────────────────────
+@media (max-width: 480px) {
+  .user-name { font-size: 18px; }
+
+  .avatar-big {
+    width: 58px;
+    height: 58px;
+    font-size: 18px;
+  }
+
+  .tab-btn {
+    padding: 7px 10px;
+    font-size: 12px;
+
+    // Hide label text on very small screens, show only icon
+    span:not(mat-icon) { display: none; }
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+
+  .profile-nav-tabs { gap: 4px; }
+
+  .status-badge { font-size: 11px; padding: 4px 10px; }
 }

@@ -18,14 +18,18 @@
         <mat-icon>menu</mat-icon>
       </button>
       <div class="top-bar-title">
-        <span>Student Profile</span>
+        <span>Candidate Profile &amp; Enrollment Details</span>
       </div>
       <div class="top-bar-right">
+        <a routerLink="/student/dashboard" class="back-link">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Dashboard</span>
+        </a>
         <div class="avatar-chip">
           <div class="avatar-circle">{{ avatarInitials() }}</div>
           <div class="avatar-info">
-            <span class="avatar-name">{{ studentData().fullName }}</span>
-            <span class="avatar-id">{{ studentData().studentId }}</span>
+            <span class="avatar-name">{{ profileService.candidateProfile().fullName }}</span>
+            <span class="avatar-id">{{ profileService.candidateProfile().studentId }}</span>
           </div>
         </div>
       </div>
@@ -35,109 +39,405 @@
       @if (saveSuccess()) {
         <div class="success-banner">
           <mat-icon>check_circle</mat-icon>
-          <span>Profile updated successfully!</span>
+          <span>Candidate details saved successfully!</span>
         </div>
       }
 
-      <!-- PROFILE HEADER CARD -->
+      <!-- PROFILE HEADER & COMPLETION CARD -->
       <app-card-wrapper>
         <div class="profile-header-strip">
           <div class="avatar-big">
             <span>{{ avatarInitials() }}</span>
           </div>
           <div class="header-details">
-            <h1 class="user-name">{{ studentData().fullName }}</h1>
+            <div class="name-row">
+              <h1 class="user-name">{{ profileService.candidateProfile().fullName }}</h1>
+              <span class="status-badge" [class.complete]="profileService.isProfileComplete()">
+                <mat-icon>{{ profileService.isProfileComplete() ? 'verified' : 'pending' }}</mat-icon>
+                {{ profileService.isProfileComplete() ? 'Profile Complete (Verified)' : 'Profile Incomplete' }}
+              </span>
+            </div>
             <p class="user-meta">
-              <span><mat-icon>badge</mat-icon> {{ studentData().studentId }}</span>
-              <span><mat-icon>email</mat-icon> {{ studentData().email }}</span>
-              <span><mat-icon>verified</mat-icon> Active Student</span>
+              <span><mat-icon>badge</mat-icon> ID: {{ profileService.candidateProfile().studentId }}</span>
+              <span><mat-icon>email</mat-icon> {{ profileService.candidateProfile().email }}</span>
+              <span><mat-icon>phone</mat-icon> {{ profileService.candidateProfile().phone }}</span>
             </p>
+
+            <!-- Completion Bar -->
+            <div class="completion-box">
+              <div class="completion-top">
+                <span class="comp-label">Profile Completion Status for Course Enrollment (ECCE, NTT, IT)</span>
+                <span class="comp-percent">{{ profileService.completionPercentage() }}%</span>
+              </div>
+              <div class="comp-track">
+                <div class="comp-fill" [style.width.%]="profileService.completionPercentage()" [class.complete]="profileService.isProfileComplete()"></div>
+              </div>
+            </div>
           </div>
         </div>
       </app-card-wrapper>
 
-      <div class="profile-grid">
-        <!-- PERSONAL DETAILS FORM -->
-        <app-card-wrapper title="Personal Details" icon="person">
-          <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" class="form-grid">
-            <app-input-field
-              label="Full Name"
-              prefixIcon="person"
-              formControlName="fullName"
-              [required]="true"
-              placeholder="Enter full name"
-            ></app-input-field>
+      <!-- NAVIGATION TABS -->
+      <div class="profile-nav-tabs">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'basic'"
+          (click)="setTab('basic')"
+        >
+          <mat-icon>person</mat-icon>
+          <span>Basic Details</span>
+        </button>
 
-            <app-input-field
-              label="Email Address"
-              type="email"
-              prefixIcon="mail"
-              formControlName="email"
-              [required]="true"
-              placeholder="Enter email address"
-            ></app-input-field>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'address'"
+          (click)="setTab('address')"
+        >
+          <mat-icon>home</mat-icon>
+          <span>Address Info</span>
+        </button>
 
-            <app-input-field
-              label="Phone Number"
-              type="tel"
-              prefixIcon="phone"
-              formControlName="phone"
-              [required]="true"
-              placeholder="10 digit mobile number"
-              [customValidationMessages]="{ pattern: 'Must be a valid 10-digit mobile number' }"
-            ></app-input-field>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'qualifications'"
+          (click)="setTab('qualifications')"
+        >
+          <mat-icon>school</mat-icon>
+          <span>Qualifications (10th/12th/Grad)</span>
+        </button>
 
-            <app-input-field
-              label="Date of Birth"
-              type="date"
-              prefixIcon="calendar_today"
-              formControlName="dob"
-              [required]="true"
-            ></app-input-field>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'security'"
+          (click)="setTab('security')"
+        >
+          <mat-icon>lock</mat-icon>
+          <span>Security</span>
+        </button>
+      </div>
 
-            <app-input-field
-              label="Gender"
-              type="select"
-              prefixIcon="wc"
-              formControlName="gender"
-              [options]="genderOptions"
-            ></app-input-field>
+      <!-- TAB CONTENT -->
+      <div class="tab-body">
 
-            <div class="full-width-col">
+        <!-- 1. BASIC DETAILS -->
+        @if (activeTab() === 'basic') {
+          <app-card-wrapper title="Candidate Basic Details" icon="badge">
+            <form [formGroup]="basicForm" (ngSubmit)="onSaveBasicDetails()" class="form-grid">
+              
               <app-input-field
-                label="Street Address"
-                type="textarea"
-                prefixIcon="home"
-                formControlName="address"
-                [rows]="3"
-                placeholder="Enter street address"
+                label="Candidate Full Name"
+                prefixIcon="person"
+                formControlName="fullName"
+                [required]="true"
+                placeholder="Candidate Full Name"
               ></app-input-field>
-            </div>
 
-            <app-input-field
-              label="City"
-              prefixIcon="location_city"
-              formControlName="city"
-              placeholder="City"
-            ></app-input-field>
+              <app-input-field
+                label="Mother's Name"
+                prefixIcon="female"
+                formControlName="motherName"
+                [required]="true"
+                placeholder="Mother's Name"
+              ></app-input-field>
 
-            <app-input-field
-              label="State"
-              prefixIcon="map"
-              formControlName="state"
-              placeholder="State"
-            ></app-input-field>
+              <app-input-field
+                label="Father's Name"
+                prefixIcon="male"
+                formControlName="fatherName"
+                [required]="true"
+                placeholder="Father's Name"
+              ></app-input-field>
 
-            <app-input-field
-              label="Pincode"
-              prefixIcon="pin"
-              formControlName="pincode"
-              placeholder="6-digit Pincode"
-            ></app-input-field>
+              <app-input-field
+                label="Date of Birth (DOB)"
+                type="date"
+                prefixIcon="calendar_today"
+                formControlName="dob"
+                [required]="true"
+              ></app-input-field>
 
-            <div class="full-width-col form-actions">
+              <app-input-field
+                label="Gender"
+                type="select"
+                prefixIcon="wc"
+                formControlName="gender"
+                [options]="genderOptions"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Marital Status"
+                type="select"
+                prefixIcon="favorite"
+                formControlName="maritalStatus"
+                [options]="maritalOptions"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Category"
+                type="select"
+                prefixIcon="category"
+                formControlName="category"
+                [options]="categoryOptions"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Physically Challenged"
+                type="select"
+                prefixIcon="accessible"
+                formControlName="physicallyChallenged"
+                [options]="physicallyChallengedOptions"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Medium of Study"
+                type="select"
+                prefixIcon="translate"
+                formControlName="mediumOfStudy"
+                [options]="mediumOptions"
+                [required]="true"
+              ></app-input-field>
+
+              <app-input-field
+                label="Aadhar Number"
+                prefixIcon="fingerprint"
+                formControlName="aadharNo"
+                [required]="true"
+                placeholder="12-digit Aadhar number"
+              ></app-input-field>
+
+              <app-input-field
+                label="PAN Number (If available)"
+                prefixIcon="credit_card"
+                formControlName="panNo"
+                placeholder="10-character PAN number"
+              ></app-input-field>
+
+              <app-input-field
+                label="Email Address"
+                type="email"
+                prefixIcon="mail"
+                formControlName="email"
+                [required]="true"
+                placeholder="Email address"
+              ></app-input-field>
+
+              <app-input-field
+                label="Phone Number"
+                type="tel"
+                prefixIcon="phone"
+                formControlName="phone"
+                [required]="true"
+                placeholder="10-digit mobile number"
+              ></app-input-field>
+
+              <div class="full-width-col form-actions">
+                <app-button
+                  label="Save Basic Details"
+                  prefixIcon="save"
+                  btnType="submit"
+                  variant="primary"
+                  [loading]="isLoading()"
+                ></app-button>
+              </div>
+            </form>
+          </app-card-wrapper>
+        }
+
+        <!-- 2. ADDRESS INFO -->
+        @if (activeTab() === 'address') {
+          <app-card-wrapper title="Address Information" icon="home">
+            <form [formGroup]="addressForm" (ngSubmit)="onSaveAddressDetails()" class="form-grid">
+              
+              <div class="full-width-col">
+                <app-input-field
+                  label="Full Residential Address"
+                  type="textarea"
+                  prefixIcon="pin_drop"
+                  formControlName="address"
+                  [required]="true"
+                  [rows]="3"
+                  placeholder="House/Street/Locality address"
+                ></app-input-field>
+              </div>
+
+              <app-input-field
+                label="City / Town"
+                prefixIcon="location_city"
+                formControlName="city"
+                [required]="true"
+                placeholder="City"
+              ></app-input-field>
+
+              <app-input-field
+                label="State / District"
+                prefixIcon="map"
+                formControlName="state"
+                [required]="true"
+                placeholder="State"
+              ></app-input-field>
+
+              <app-input-field
+                label="Pincode"
+                prefixIcon="pin"
+                formControlName="pincode"
+                [required]="true"
+                placeholder="6-digit pincode"
+              ></app-input-field>
+
+              <div class="full-width-col form-actions">
+                <app-button
+                  label="Save Address Info"
+                  prefixIcon="save"
+                  btnType="submit"
+                  variant="primary"
+                  [loading]="isLoading()"
+                ></app-button>
+              </div>
+            </form>
+          </app-card-wrapper>
+        }
+
+        <!-- 3. QUALIFICATIONS -->
+        @if (activeTab() === 'qualifications') {
+          <form [formGroup]="qualificationForm" (ngSubmit)="onSaveQualifications()" class="qualifications-wrap">
+            
+            <!-- 10th Qualification -->
+            <app-card-wrapper title="10th Class Details (Secondary)" icon="workspace_premium">
+              <div class="form-grid">
+                <app-input-field
+                  label="Board / Institution"
+                  prefixIcon="account_balance"
+                  formControlName="tenthBoard"
+                  [required]="true"
+                  placeholder="e.g. CBSE / RBSE"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Year of Passing"
+                  prefixIcon="event"
+                  formControlName="tenthPassingYear"
+                  [required]="true"
+                  placeholder="e.g. 2018"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Subjects / Stream"
+                  prefixIcon="menu_book"
+                  formControlName="tenthStream"
+                  [required]="true"
+                  placeholder="e.g. General Subjects"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Percentage of Marks (%)"
+                  prefixIcon="percent"
+                  formControlName="tenthPercentage"
+                  [required]="true"
+                  placeholder="e.g. 85.4%"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Division / Grade"
+                  prefixIcon="stars"
+                  formControlName="tenthGrade"
+                  [required]="true"
+                  placeholder="e.g. First Division / A"
+                ></app-input-field>
+              </div>
+            </app-card-wrapper>
+
+            <!-- 12th Qualification -->
+            <app-card-wrapper title="12th Class Details (Senior Secondary)" icon="school">
+              <div class="form-grid">
+                <app-input-field
+                  label="Board / Institution"
+                  prefixIcon="account_balance"
+                  formControlName="twelfthBoard"
+                  [required]="true"
+                  placeholder="e.g. CBSE / RBSE"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Year of Passing"
+                  prefixIcon="event"
+                  formControlName="twelfthPassingYear"
+                  [required]="true"
+                  placeholder="e.g. 2020"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Subjects / Stream"
+                  prefixIcon="menu_book"
+                  formControlName="twelfthStream"
+                  [required]="true"
+                  placeholder="e.g. Science PCM / Arts / Commerce"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Percentage of Marks (%)"
+                  prefixIcon="percent"
+                  formControlName="twelfthPercentage"
+                  [required]="true"
+                  placeholder="e.g. 82.0%"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Division / Grade"
+                  prefixIcon="stars"
+                  formControlName="twelfthGrade"
+                  [required]="true"
+                  placeholder="e.g. First Division"
+                ></app-input-field>
+              </div>
+            </app-card-wrapper>
+
+            <!-- Graduation Qualification -->
+            <app-card-wrapper title="Graduation Details (Degree/Diploma - Optional)" icon="history_edu">
+              <div class="form-grid">
+                <app-input-field
+                  label="Board / University"
+                  prefixIcon="account_balance"
+                  formControlName="gradBoard"
+                  placeholder="University / Institute name"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Year of Passing"
+                  prefixIcon="event"
+                  formControlName="gradPassingYear"
+                  placeholder="e.g. 2023"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Subjects / Degree Stream"
+                  prefixIcon="menu_book"
+                  formControlName="gradStream"
+                  placeholder="e.g. B.Sc. / B.A. / B.Com / BCA"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Percentage of Marks (%)"
+                  prefixIcon="percent"
+                  formControlName="gradPercentage"
+                  placeholder="e.g. 78.5%"
+                ></app-input-field>
+
+                <app-input-field
+                  label="Division / Grade"
+                  prefixIcon="stars"
+                  formControlName="gradGrade"
+                  placeholder="e.g. First Division"
+                ></app-input-field>
+              </div>
+            </app-card-wrapper>
+
+            <div class="form-actions-bar">
               <app-button
-                label="Save Profile Changes"
+                label="Save Educational Qualifications"
                 prefixIcon="save"
                 btnType="submit"
                 variant="primary"
@@ -145,46 +445,49 @@
               ></app-button>
             </div>
           </form>
-        </app-card-wrapper>
+        }
 
-        <!-- SECURITY FORM -->
-        <app-card-wrapper title="Security &amp; Password" icon="lock">
-          <form [formGroup]="securityForm" (ngSubmit)="onUpdatePassword()" class="security-form">
-            <app-input-field
-              label="Current Password"
-              type="password"
-              formControlName="currentPassword"
-              [required]="true"
-              placeholder="Enter current password"
-            ></app-input-field>
+        <!-- 4. SECURITY -->
+        @if (activeTab() === 'security') {
+          <app-card-wrapper title="Account Security &amp; Password" icon="lock">
+            <form [formGroup]="securityForm" (ngSubmit)="onUpdatePassword()" class="security-form">
+              <app-input-field
+                label="Current Password"
+                type="password"
+                formControlName="currentPassword"
+                [required]="true"
+                placeholder="Enter current password"
+              ></app-input-field>
 
-            <app-input-field
-              label="New Password"
-              type="password"
-              formControlName="newPassword"
-              [required]="true"
-              placeholder="Enter new password"
-            ></app-input-field>
+              <app-input-field
+                label="New Password"
+                type="password"
+                formControlName="newPassword"
+                [required]="true"
+                placeholder="Enter new password"
+              ></app-input-field>
 
-            <app-input-field
-              label="Confirm New Password"
-              type="password"
-              formControlName="confirmPassword"
-              [required]="true"
-              placeholder="Confirm new password"
-            ></app-input-field>
+              <app-input-field
+                label="Confirm New Password"
+                type="password"
+                formControlName="confirmPassword"
+                [required]="true"
+                placeholder="Confirm new password"
+              ></app-input-field>
 
-            <div class="form-actions">
-              <app-button
-                label="Update Password"
-                prefixIcon="lock_reset"
-                btnType="submit"
-                variant="secondary"
-                [loading]="isLoading()"
-              ></app-button>
-            </div>
-          </form>
-        </app-card-wrapper>
+              <div class="form-actions">
+                <app-button
+                  label="Update Password"
+                  prefixIcon="lock_reset"
+                  btnType="submit"
+                  variant="secondary"
+                  [loading]="isLoading()"
+                ></app-button>
+              </div>
+            </form>
+          </app-card-wrapper>
+        }
+
       </div>
     </main>
   </div>

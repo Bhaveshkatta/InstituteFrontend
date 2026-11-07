@@ -25,6 +25,17 @@
       </div>
 
       <div class="top-bar-right">
+
+        <!-- THEME SWITCHER BUTTON -->
+        <button
+          class="theme-toggle-btn"
+          (click)="themeService.toggleTheme()"
+          [title]="'Switch to ' + (themeService.isDark() ? 'Light' : 'Dark') + ' Mode'"
+          mat-icon-button
+        >
+          <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+
         <button class="empty-toggle-btn" (click)="toggleEmptyDemo()" title="Toggle Empty States Demo">
           <mat-icon>{{ showEmptyState() ? 'toggle_on' : 'toggle_off' }}</mat-icon>
           <span>Demo Empty State</span>
@@ -50,6 +61,14 @@
     <!-- PAGE CONTENT -->
     <main class="page-content">
 
+      <!-- ACTION FEEDBACK TOAST -->
+      @if (actionFeedback()) {
+        <div class="toast-feedback">
+          <mat-icon>info</mat-icon>
+          <span>{{ actionFeedback() }}</span>
+        </div>
+      }
+
       <!-- WELCOME STRIP -->
       <section class="welcome-strip">
         <div class="welcome-text">
@@ -67,10 +86,10 @@
         <div class="promo-content">
           <div class="promo-badge">
             <mat-icon>stars</mat-icon>
-            <span>Government Sponsored</span>
+            <span>Government Sponsored Schemes</span>
           </div>
-          <h2>Free Computer Courses Scheme Active</h2>
-          <p>Register your interest for 100% fee waiver on Web Development, NIELIT CCC, and Tally Prime programs.</p>
+          <h2>ECCE, NTT &amp; Free Computer Courses Active</h2>
+          <p>Register your profile and apply for Nursery Teacher Training (NTT), Early Childhood Care (ECCE), and free Web Development programs.</p>
         </div>
         <div class="promo-action">
           <app-button
@@ -97,57 +116,177 @@
         }
       </section>
 
-      <!-- TWO COLUMN ROW -->
-      <div class="two-col">
-
-        <!-- ENROLLED COURSES -->
-        <section class="card courses-card">
-          <div class="card-header">
+      <!-- MY COURSES SECTION (ENHANCED) -->
+      <section class="card courses-card">
+        <div class="card-header">
+          <div class="header-title-group">
             <mat-icon>auto_stories</mat-icon>
             <h2>My Courses</h2>
-            <a class="view-all-link" routerLink="/student/courses">View All</a>
           </div>
+          <a class="view-all-link" routerLink="/student/courses">Explore All Courses</a>
+        </div>
 
-          @if (showEmptyState() || enrolledCourses().length === 0) {
-            <app-empty-state
-              icon="school"
-              title="No courses purchased yet"
-              description="Explore our high-impact computer courses and enroll to boost your tech career."
-              actionLabel="Browse Courses"
-              actionIcon="search"
-              (actionClicked)="router.navigate(['/student/courses'])"
-            ></app-empty-state>
-          } @else {
-            <div class="courses-list">
-              @for (course of enrolledCourses(); track course.id) {
-                <div class="course-item">
-                  <div class="course-icon" [style.--icon-color]="course.iconColor">
+        @if (showEmptyState() || enrolledCourses().length === 0) {
+          <app-empty-state
+            icon="school"
+            title="No courses enrolled yet"
+            description="Explore our computer & teacher training courses to get started."
+            actionLabel="Browse Courses"
+            actionIcon="search"
+            (actionClicked)="router.navigate(['/student/courses'])"
+          ></app-empty-state>
+        } @else {
+          <div class="courses-detailed-grid">
+            @for (course of enrolledCourses(); track course.id) {
+              <div class="course-detail-card">
+                <div class="course-header-row">
+                  <div class="course-icon-badge" [style.--icon-color]="course.iconColor">
                     <mat-icon [style.color]="course.iconColor">{{ course.icon }}</mat-icon>
                   </div>
-                  <div class="course-details">
-                    <div class="course-top">
-                      <span class="course-title">{{ course.title }}</span>
-                      <span class="course-progress-label">{{ course.progress }}%</span>
+                  <div class="course-main-info">
+                    <h3 class="course-name">{{ course.title }}</h3>
+                    <span class="course-category">{{ course.category }}</span>
+                  </div>
+                  <div class="course-progress-badge">
+                    <span>{{ course.progress }}% Completed</span>
+                  </div>
+                </div>
+
+                <div class="progress-track">
+                  <div class="progress-fill" [style.width.%]="course.progress" [style.background]="course.iconColor"></div>
+                </div>
+
+                <!-- Course Dates & Timings Info -->
+                <div class="course-schedule-details">
+                  <div class="detail-item">
+                    <mat-icon>event</mat-icon>
+                    <div>
+                      <span class="detail-label">Start Date</span>
+                      <span class="detail-val">{{ course.startDate }}</span>
                     </div>
-                    <div class="progress-track">
-                      <div class="progress-fill" [style.width.%]="course.progress" [style.background]="course.iconColor"></div>
+                  </div>
+
+                  <div class="detail-item">
+                    <mat-icon>event_available</mat-icon>
+                    <div>
+                      <span class="detail-label">Approx End Date</span>
+                      <span class="detail-val">{{ course.endDate }}</span>
                     </div>
-                    <div class="course-meta">
-                      <span><mat-icon>schedule</mat-icon> Next: {{ course.nextClass }}</span>
-                      <span><mat-icon>person</mat-icon> {{ course.instructor }}</span>
+                  </div>
+
+                  <div class="detail-item full">
+                    <mat-icon>schedule</mat-icon>
+                    <div>
+                      <span class="detail-label">Batch Timing</span>
+                      <span class="detail-val">{{ course.batchTiming }}</span>
                     </div>
                   </div>
                 </div>
-              }
-            </div>
-          }
-        </section>
 
-        <!-- SCHEDULE -->
+                <!-- Action Buttons: Download Admit Card, Download Certificate, View Course -->
+                <div class="course-actions-bar">
+                  <button class="action-btn outline" (click)="downloadAdmitCard(course)" title="Download Admit Card">
+                    <mat-icon>badge</mat-icon>
+                    <span>Admit Card</span>
+                  </button>
+
+                  <button
+                    class="action-btn outline"
+                    [class.disabled]="!course.certificateAvailable"
+                    (click)="downloadCertificate(course)"
+                    title="Download Course Certificate"
+                  >
+                    <mat-icon>workspace_premium</mat-icon>
+                    <span>Certificate</span>
+                  </button>
+
+                  <button class="action-btn primary" (click)="viewCourseDetails(course)">
+                    <mat-icon>visibility</mat-icon>
+                    <span>View Course</span>
+                  </button>
+                </div>
+
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- APPLICATIONS SECTION (NEW) -->
+      <section class="card applications-card">
+        <div class="card-header">
+          <div class="header-title-group">
+            <mat-icon>description</mat-icon>
+            <h2>My Applications</h2>
+          </div>
+          <button class="add-app-btn" (click)="startNewApplication()">
+            <mat-icon>add</mat-icon>
+            <span>New Application</span>
+          </button>
+        </div>
+
+        @if (showEmptyState() || applications().length === 0) {
+          <app-empty-state
+            icon="description"
+            title="No applications submitted yet"
+            description="Complete your candidate profile and apply for ECCE, NTT, or IT courses."
+            actionLabel="Apply Now"
+            actionIcon="edit_note"
+            (actionClicked)="startNewApplication()"
+          ></app-empty-state>
+        } @else {
+          <div class="applications-table-wrapper">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th>Application Name</th>
+                  <th>Category</th>
+                  <th>Applied Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (app of applications(); track app.id) {
+                  <tr>
+                    <td class="app-name-cell">
+                      <mat-icon class="doc-icon">assignment</mat-icon>
+                      <div class="app-info">
+                        <span class="app-title">{{ app.applicationName }}</span>
+                        <span class="app-id">ID: {{ app.id }}</span>
+                      </div>
+                    </td>
+                    <td>{{ app.courseCategory }}</td>
+                    <td>{{ app.appliedDate }}</td>
+                    <td>
+                      <span class="status-chip" [attr.data-status]="app.status">
+                        {{ app.status }}
+                      </span>
+                    </td>
+                    <td>
+                      <button class="view-btn" (click)="viewApplication(app)">
+                        <mat-icon>visibility</mat-icon>
+                        <span>View</span>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+
+      <!-- TWO COLUMN ROW: UPCOMING SCHEDULE & ANNOUNCEMENTS -->
+      <div class="two-col">
+
+        <!-- UPCOMING SCHEDULE -->
         <section class="card schedule-card">
           <div class="card-header">
-            <mat-icon>event_note</mat-icon>
-            <h2>Today's Schedule</h2>
+            <div class="header-title-group">
+              <mat-icon>event_note</mat-icon>
+              <h2>Today's Schedule</h2>
+            </div>
           </div>
 
           @if (showEmptyState() || schedule().length === 0) {
@@ -176,28 +315,29 @@
           }
         </section>
 
-      </div><!-- /two-col -->
-
-      <!-- BOTTOM ROW -->
-      <div class="two-col">
-
         <!-- ANNOUNCEMENTS -->
         <section class="card announcements-card">
           <div class="card-header">
-            <mat-icon>campaign</mat-icon>
-            <h2>Announcements</h2>
+            <div class="header-title-group">
+              <mat-icon>campaign</mat-icon>
+              <h2>Announcements</h2>
+            </div>
           </div>
 
           @if (showEmptyState() || announcements().length === 0) {
             <app-empty-state
               icon="campaign"
               title="No announcements available"
-              description="All caught up! Check back later for institute notices and exam schedules."
+              description="All caught up! Check back later for institute notices."
             ></app-empty-state>
           } @else {
             <div class="announcements-list">
               @for (ann of announcements(); track ann.id) {
-                <div class="announcement-item" [attr.data-priority]="ann.priority">
+                <div
+                  class="announcement-item clickable"
+                  [attr.data-priority]="ann.priority"
+                  (click)="openAnnouncementModal(ann)"
+                >
                   <div class="ann-icon-wrap">
                     <mat-icon>{{ ann.icon }}</mat-icon>
                   </div>
@@ -207,6 +347,7 @@
                       <span class="ann-date">{{ ann.date }}</span>
                     </div>
                     <p class="ann-text">{{ ann.body }}</p>
+                    <span class="click-hint"><mat-icon>open_in_new</mat-icon> Click to view full notice</span>
                   </div>
                 </div>
               }
@@ -214,28 +355,266 @@
           }
         </section>
 
-        <!-- QUICK ACTIONS -->
-        <section class="card quick-actions-card">
-          <div class="card-header">
+      </div><!-- /two-col -->
+
+      <!-- QUICK ACTIONS -->
+      <section class="card quick-actions-card">
+        <div class="card-header">
+          <div class="header-title-group">
             <mat-icon>bolt</mat-icon>
             <h2>Quick Actions</h2>
           </div>
+        </div>
 
-          <div class="quick-actions-grid">
-            @for (action of quickActions; track action.label) {
-              <button class="quick-action-btn" [style.--qa-color]="action.color">
-                <div class="qa-icon-wrap">
-                  <mat-icon [style.color]="action.color">{{ action.icon }}</mat-icon>
-                </div>
-                <span>{{ action.label }}</span>
-              </button>
-            }
-          </div>
-        </section>
+        <div class="quick-actions-grid">
+          <button class="quick-action-btn" (click)="openLeaveModal()" style="--qa-color: #a855f7;">
+            <div class="qa-icon-wrap">
+              <mat-icon style="color: #a855f7;">event_busy</mat-icon>
+            </div>
+            <span>Apply for Leave</span>
+          </button>
 
-      </div><!-- /two-col -->
+          <button class="quick-action-btn" (click)="startNewApplication()" style="--qa-color: #00e5ff;">
+            <div class="qa-icon-wrap">
+              <mat-icon style="color: #00e5ff;">edit_note</mat-icon>
+            </div>
+            <span>New Course Application</span>
+          </button>
+
+          <button class="quick-action-btn" routerLink="/student/profile" style="--qa-color: #10b981;">
+            <div class="qa-icon-wrap">
+              <mat-icon style="color: #10b981;">badge</mat-icon>
+            </div>
+            <span>Update Profile</span>
+          </button>
+
+          <button class="quick-action-btn" routerLink="/student/courses" style="--qa-color: #f59e0b;">
+            <div class="qa-icon-wrap">
+              <mat-icon style="color: #f59e0b;">school</mat-icon>
+            </div>
+            <span>Browse Courses</span>
+          </button>
+        </div>
+      </section>
 
     </main>
   </div>
+
+  <!-- ═══════════════════════════════════════════════════ MODALS ═══════════════════════════════════════════════════ -->
+
+  <!-- 1. ANNOUNCEMENT DETAIL MODAL -->
+  @if (selectedAnnouncement()) {
+    <div class="modal-overlay" (click)="closeAnnouncementModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge" [attr.data-priority]="selectedAnnouncement()?.priority">
+              <mat-icon>{{ selectedAnnouncement()?.icon }}</mat-icon>
+            </div>
+            <div>
+              <h3>{{ selectedAnnouncement()?.title }}</h3>
+              <span class="modal-sub">{{ selectedAnnouncement()?.date }} • Priority: {{ selectedAnnouncement()?.priority | titlecase }}</span>
+            </div>
+          </div>
+          <button class="close-modal-btn" (click)="closeAnnouncementModal()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p class="announcement-full-text">{{ selectedAnnouncement()?.body }}</p>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-btn-close" (click)="closeAnnouncementModal()">
+            <mat-icon>close</mat-icon>
+            <span>Close Notice</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- 2. APPLY FOR LEAVE MODAL -->
+  @if (leaveModalOpen()) {
+    <div class="modal-overlay" (click)="closeLeaveModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge purple">
+              <mat-icon>event_busy</mat-icon>
+            </div>
+            <div>
+              <h3>Apply for Leave</h3>
+              <span class="modal-sub">Submit leave request for admin approval</span>
+            </div>
+          </div>
+          <button class="close-modal-btn" (click)="closeLeaveModal()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <form [formGroup]="leaveForm" (ngSubmit)="submitLeaveRequest()" class="modal-form-body">
+          <div class="form-group">
+            <label>Leave Type <span class="req">*</span></label>
+            <select formControlName="leaveType" class="form-control">
+              <option value="Single Day">Single Day</option>
+              <option value="Multiple Days">Multiple Days</option>
+              <option value="Emergency Leave">Emergency Leave</option>
+              <option value="Medical Leave">Medical Leave</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>From Date <span class="req">*</span></label>
+              <input type="date" formControlName="fromDate" class="form-control" />
+              @if (leaveForm.get('fromDate')?.touched && leaveForm.get('fromDate')?.invalid) {
+                <span class="field-error-text">From Date is required.</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>To Date <span class="req">*</span></label>
+              <input type="date" formControlName="toDate" class="form-control" />
+              @if (leaveForm.get('toDate')?.touched && leaveForm.get('toDate')?.invalid) {
+                <span class="field-error-text">
+                  @if (leaveForm.get('toDate')?.errors?.['dateOrder']) {
+                    To Date cannot be earlier than From Date.
+                  } @else {
+                    To Date is required.
+                  }
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Reason for Leave <span class="req">*</span></label>
+            <textarea formControlName="reason" rows="3" placeholder="Provide reason for leave application (at least 10 characters)..." class="form-control"></textarea>
+            @if (leaveForm.get('reason')?.touched && leaveForm.get('reason')?.invalid) {
+              <span class="field-error-text">
+                @if (leaveForm.get('reason')?.errors?.['required']) {
+                  Reason is required.
+                } @else if (leaveForm.get('reason')?.errors?.['minlength']) {
+                  Reason must be at least 10 characters long.
+                }
+              </span>
+            }
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="modal-btn-close" (click)="closeLeaveModal()">Cancel</button>
+            <button type="submit" class="modal-btn-submit">
+              <mat-icon>send</mat-icon>
+              <span>Submit Leave Request</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- 3. VIEW COURSE DETAILS MODAL -->
+  @if (selectedCourseForView()) {
+    <div class="modal-overlay" (click)="closeCourseModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge cyan">
+              <mat-icon>{{ selectedCourseForView()?.icon }}</mat-icon>
+            </div>
+            <div>
+              <h3>{{ selectedCourseForView()?.title }}</h3>
+              <span class="modal-sub">{{ selectedCourseForView()?.category }}</span>
+            </div>
+          </div>
+          <button class="close-modal-btn" (click)="closeCourseModal()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <div class="modal-body course-modal-body">
+          <div class="modal-info-grid">
+            <div class="info-block">
+              <span class="lbl">Start Date:</span>
+              <span class="val">{{ selectedCourseForView()?.startDate }}</span>
+            </div>
+            <div class="info-block">
+              <span class="lbl">Approx End Date:</span>
+              <span class="val">{{ selectedCourseForView()?.endDate }}</span>
+            </div>
+            <div class="info-block full">
+              <span class="lbl">Batch Timing:</span>
+              <span class="val">{{ selectedCourseForView()?.batchTiming }}</span>
+            </div>
+            <div class="info-block">
+              <span class="lbl">Instructor:</span>
+              <span class="val">{{ selectedCourseForView()?.instructor }}</span>
+            </div>
+            <div class="info-block">
+              <span class="lbl">Completed Hours:</span>
+              <span class="val">{{ selectedCourseForView()?.completedHours }} / {{ selectedCourseForView()?.totalHours }} hrs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-btn-close" (click)="closeCourseModal()">
+            <mat-icon>close</mat-icon>
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- 4. VIEW APPLICATION MODAL -->
+  @if (selectedApplicationForView()) {
+    <div class="modal-overlay" (click)="closeApplicationModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge green">
+              <mat-icon>assignment</mat-icon>
+            </div>
+            <div>
+              <h3>{{ selectedApplicationForView()?.applicationName }}</h3>
+              <span class="modal-sub">Application ID: {{ selectedApplicationForView()?.id }}</span>
+            </div>
+          </div>
+          <button class="close-modal-btn" (click)="closeApplicationModal()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <div class="modal-body app-modal-body">
+          <div class="modal-info-grid">
+            <div class="info-block">
+              <span class="lbl">Applied Date:</span>
+              <span class="val">{{ selectedApplicationForView()?.appliedDate }}</span>
+            </div>
+            <div class="info-block">
+              <span class="lbl">Status:</span>
+              <span class="status-chip" [attr.data-status]="selectedApplicationForView()?.status">
+                {{ selectedApplicationForView()?.status }}
+              </span>
+            </div>
+            <div class="info-block full">
+              <span class="lbl">Remarks / Note:</span>
+              <span class="val">{{ selectedApplicationForView()?.remarks }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-btn-close" (click)="closeApplicationModal()">
+            <mat-icon>close</mat-icon>
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 
 </div>

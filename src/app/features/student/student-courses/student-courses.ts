@@ -1,12 +1,13 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DataService } from '../../../services/data.service';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { ProfileService } from '../../../services/profile.service';
+import { ThemeService } from '../../../services/theme.service';
 import { StudentSidebarComponent } from '../../../shared/student-sidebar/student-sidebar';
 
 interface CourseDisplay {
@@ -28,6 +29,7 @@ interface CourseDisplay {
 
 @Component({
   selector: 'app-student-courses',
+  standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule, RouterLink, FormsModule, StudentSidebarComponent],
   templateUrl: './student-courses.html',
   styleUrl: './student-courses.scss',
@@ -35,11 +37,14 @@ interface CourseDisplay {
 export class StudentCourses {
   private readonly dataService = inject(DataService);
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+  private readonly profileService = inject(ProfileService);
+  protected readonly themeService = inject(ThemeService);
+  protected readonly router = inject(Router);
 
   searchQuery = signal('');
   selectedCategory = signal('All');
   sidebarOpen = signal(false);
+  notificationFeedback = signal<string | null>(null);
 
   private readonly iconMap: Record<string, { icon: string; color: string }> = {
     'web-dev':    { icon: 'code',              color: '#00e5ff' },
@@ -98,6 +103,25 @@ export class StudentCourses {
 
   getStars(rating: number): number[] {
     return Array.from({ length: 5 }, (_, i) => i);
+  }
+
+  enrollCourse(course: CourseDisplay) {
+    this.profileService.checkProfileAndProceed(
+      this.router,
+      () => {
+        this.showToast(`Enrollment successful for ${course.title}!`);
+      },
+      (msg) => {
+        this.showToast(msg);
+      }
+    );
+  }
+
+  showToast(msg: string) {
+    this.notificationFeedback.set(msg);
+    setTimeout(() => {
+      this.notificationFeedback.set(null);
+    }, 4000);
   }
 
   toggleSidebar() {

@@ -4,6 +4,7 @@
 @use 'styles/mixins';
 @use 'styles/utilities';
 @import 'ngx-toastr/toastr';
+
 html {
   height: 100%;
   scroll-behavior: smooth;
@@ -20,13 +21,13 @@ html {
 }
 
 body {
-  // Default the application to a light color theme.
   color-scheme: light;
-  background-color: #fafbfc; // Light off-white base background
-  color: #1e293b; // Modern text color
+  background-color: #fafbfc;
+  color: #1e293b;
   font-family: vars.$font-main;
   margin: 0;
   height: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Modern Premium Scrollbar Customization */
@@ -45,5 +46,159 @@ body {
   
   &:hover {
     background: #94a3b8;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL LIGHT THEME OVERRIDES
+══════════════════════════════════════════════════════════════ */
+html.light-theme, body.light-theme {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+
+  .dashboard-shell {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+
+    &::before {
+      background-image:
+        linear-gradient(rgba(203, 213, 225, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(203, 213, 225, 0.4) 1px, transparent 1px) !important;
+    }
+  }
+
+  .sidebar {
+    background: #ffffff !important;
+    border-right-color: #e2e8f0 !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05) !important;
+
+    .nav-brand { color: #0f172a !important; }
+    .nav-item {
+      color: #475569 !important;
+      &:hover { background: #f1f5f9 !important; color: #0284c7 !important; }
+      &.active { background: #e0f2fe !important; color: #0284c7 !important; border-color: #bae6fd !important; }
+    }
+  }
+
+  .top-bar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+
+    .top-bar-title { color: #0f172a !important; }
+  }
+
+  .avatar-chip {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+
+    .avatar-name { color: #0f172a !important; }
+    .avatar-id { color: #64748b !important; }
+  }
+
+  .card, .stat-card, .course-card, .course-detail-card, .announcement-item, .profile-header-strip {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    color: #0f172a !important;
+
+    h1, h2, h3, h4, .stat-value, .course-name, .course-title, .ann-title, .timeline-subject, .app-title, .user-name {
+      color: #0f172a !important;
+    }
+    p, .welcome-date, .stat-label, .ann-text, .course-desc, .timeline-meta, .detail-val, .user-meta {
+      color: #334155 !important;
+    }
+  }
+
+  .app-table {
+    th { color: #64748b !important; border-bottom-color: #e2e8f0 !important; }
+    td { color: #334155 !important; border-bottom-color: #f1f5f9 !important; }
+  }
+
+  .welcome-strip, .govt-promo-banner, .page-header {
+    background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 50%, #f3e8ff 100%) !important;
+    border-color: #bae6fd !important;
+    color: #0f172a !important;
+
+    h1, h2 { color: #0f172a !important; }
+    p { color: #334155 !important; }
+  }
+
+  /* Profile Nav Tabs Light Theme */
+  .profile-nav-tabs {
+    border-bottom-color: #cbd5e1 !important;
+  }
+
+  .tab-btn {
+    color: #475569 !important;
+
+    mat-icon { color: #64748b !important; }
+
+    &:hover {
+      color: #0284c7 !important;
+      background: #e0f2fe !important;
+
+      mat-icon { color: #0284c7 !important; }
+    }
+
+    &.active {
+      background: #e0f2fe !important;
+      border-color: #7dd3fc !important;
+      color: #0284c7 !important;
+      font-weight: 600 !important;
+
+      mat-icon { color: #0284c7 !important; }
+    }
+  }
+
+  /* Modals Light Theme */
+  .modal-overlay {
+    background: rgba(15, 23, 42, 0.6) !important;
+  }
+
+  .modal-card {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+    color: #0f172a !important;
+
+    .modal-header { border-bottom-color: #e2e8f0 !important; }
+    .modal-footer { border-top-color: #e2e8f0 !important; }
+
+    h3, .modal-title { color: #0f172a !important; }
+    p, label, .modal-sub, .announcement-full-text, .lbl, .val { color: #334155 !important; }
+  }
+
+  /* Form Control & Dropdown Options Light Theme */
+  .form-control, input.form-control, select.form-control, textarea.form-control {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+
+    &::placeholder {
+      color: #94a3b8 !important;
+    }
+  }
+
+  select.form-control option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .modal-btn-close {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #334155 !important;
+
+    &:hover { background: #e2e8f0 !important; color: #0f172a !important; }
+  }
+
+
+  .card-wrapper-container {
+    @media (max-width: 768px) {
+      &.is-glass{
+        background: #ffffff;
+      }
+    }
   }
 }
